@@ -73,6 +73,10 @@ declare global {
         createdAt: Date;
     };
 
+    type TagName = {
+        name: string;
+    };
+
     type ExpressResponse = Response;
     type ExpressRequest = Request;
 

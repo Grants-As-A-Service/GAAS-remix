@@ -7,10 +7,7 @@ const getAccount = () => {};
 const createAccount = (account: AccountInfo) => {
     return new Promise((resolve, reject) => {
         try {
-            AccountZod.parse(account);
-
             const accountDocument = new AccountModel(account);
-
             accountDocument.save().then(resolve).catch(reject);
         } catch (error) {
             console.log(error);

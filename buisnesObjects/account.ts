@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Builder } from "./builder";
 
 export const UserZod: z.ZodSchema<User> = z.object({
     name: z.string(),
@@ -26,17 +27,13 @@ export const AccountZod: z.ZodSchema<AccountInfo> = z.object({
     buisness: BuisnessZod,
 });
 
-export class AccountBuilder {
-    body: any;
+export type AccountError = z.ZodError<AccountInfo>;
 
-    constructor(body: any) {
-        this.body = body;
-    }
-
+export class AccountBuilder extends Builder<AccountInfo> {
     build(): AccountInfo {
         let body = this.body;
 
-        return {
+        let accountInfo: AccountInfo = {
             buisness: {
                 ...body.buisness,
                 fte: parseInt(body.buisness.fte),
@@ -48,5 +45,9 @@ export class AccountBuilder {
                 ...body.user,
             },
         };
+
+        AccountZod.parse(accountInfo);
+
+        return accountInfo;
     }
 }

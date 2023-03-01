@@ -3,15 +3,16 @@ import { BuisnessCredentialsForum } from "./BuissnessForum";
 import { UserCredentialForm } from "./UserForums";
 import { Request, json } from "@remix-run/node";
 import { createAccount } from "db/controllers/accountController";
-import { mongoHandlerAlwaysResolve } from "utils/httpHandler";
-import { AccountBuilder } from "buisnesObjects/account";
+import { bodyParserHandler, mongoHandler } from "utils/httpHandler";
+import { AccountBuilder, AccountError } from "buisnesObjects/account";
+import { ZodError, ZodParsedType } from "zod";
 
 export async function action({ request }: { request: Request }) {
     let body = await request.json();
 
-    let account = new AccountBuilder(body).build();
+    let account = bodyParserHandler(new AccountBuilder(body));
 
-    let res = await mongoHandlerAlwaysResolve(createAccount(account));
+    let res = await mongoHandler(createAccount(account));
 
     return new Response(JSON.stringify(res.data), {
         status: res.status,

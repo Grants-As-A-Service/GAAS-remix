@@ -1,6 +1,6 @@
-import { z, infer } from 'zod'
-import { TagZod } from './tag'
-
+import { z, infer } from "zod";
+import { Builder } from "./builder";
+import { TagZod } from "./tag";
 
 export const ProjectZod: z.ZodSchema<Project> = z.object({
     name: z.string(),
@@ -10,5 +10,22 @@ export const ProjectZod: z.ZodSchema<Project> = z.object({
     capex: z.number(),
     annualOpex: z.number(),
     tags: z.array(TagZod),
-    status: z.string()
-})
+    status: z.string(),
+});
+
+export class ProjectBuilder extends Builder<Project> {
+    build(): Project {
+        let body = this.body;
+
+        let project: Project = {
+            ...body,
+            startDate: new Date(body.startDate),
+            endDate: new Date(body.endDate),
+            tags: [],
+        };
+
+        ProjectZod.parse(project);
+
+        return project;
+    }
+}

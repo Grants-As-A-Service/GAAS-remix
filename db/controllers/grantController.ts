@@ -10,10 +10,7 @@ const getGrants = () => {
 const createGrant = async (grant: Grant) => {
     return new Promise((resolve, reject) => {
         try {
-            GrantZod.parse(grant);
-
             const grantDocument = new GrantModel(grant);
-
             grantDocument.save().then(resolve).catch(reject);
         } catch (error) {
             console.log(error);
