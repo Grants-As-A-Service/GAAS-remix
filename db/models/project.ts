@@ -1,48 +1,46 @@
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
 
-const project = mongoose.Schema({
+const Project = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
-        required: true
+        required: true,
     },
     capex: {
         type: Number,
-        require: true
+        require: true,
     },
     annualOpex: {
         type: Number,
-        require: true
+        require: true,
     },
     startDate: {
         type: Date,
-        required: true
+        required: true,
     },
     endDate: {
         type: Date,
-        required: true
+        required: true,
     },
     tags: [
         {
             name: {
                 type: String,
-                required: true
+                required: true,
             },
             description: {
                 type: String,
-                required: true
+                required: true,
             },
             strength: {
                 type: String,
-                required: true
+                required: true,
             },
-
-        }
+        },
     ],
 });
 
-const Project = mongoose.model('project', project);
-module.exports = Project;
+export const ProjectModel = model("project", Project);

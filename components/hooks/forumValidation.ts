@@ -39,7 +39,7 @@ export const useForumValidationRemix = <State>(initState: State, condition: (sta
     ];
 };
 
-export const useForumValidation = <State>(initState: State, condition: (state: State) => string, upload: (state: State) => Promise<Response>) => {
+export const useForumValidationPost = <State>(initState: State, condition: (state: State) => string, upload: (state: State) => Promise<Response>) => {
     const [error, setError] = useState("");
     const [state, setState] = useState(initState);
 
@@ -64,16 +64,50 @@ export const useForumValidation = <State>(initState: State, condition: (state: S
 
     const submit = () => {
         if (checkInput() === "") {
-            return poster().catch((error) => {
-                setError(JSON.stringify(error));
+            return new Promise((resolve, reject) => {
+                poster()
+                    .then(resolve)
+                    .catch((error) => {
+                        setError(JSON.stringify(error));
+                        reject(error);
+                    });
             });
         }
     };
 
-    return [update, submit, error, setError] as [
+    return [update, submit, isFetching, error, setError] as [
         (data: string, key: keyof State) => void,
         () => Promise<Response>,
+        boolean,
         string,
         Dispatch<SetStateAction<string>>
     ];
+};
+
+export const useForumValidation = <State>(initState: State, condition: (state: State) => string, done: (state: State) => void) => {
+    const [error, setError] = useState("");
+    const [state, setState] = useState(initState);
+
+    const update = (data: string, key: keyof State) => {
+        setState((oldState) => {
+            let newState = structuredClone(oldState);
+            //@ts-ignore
+            newState[key] = data;
+            return newState;
+        });
+    };
+
+    const checkInput = () => {
+        let newError = condition(state);
+        setError(newError as string);
+        return newError;
+    };
+
+    const submit = () => {
+        if (checkInput() === "") {
+            done(state);
+        }
+    };
+
+    return [update, error, setError, submit] as [(data: string, key: keyof State) => void, string, Dispatch<SetStateAction<string>>, typeof submit];
 };

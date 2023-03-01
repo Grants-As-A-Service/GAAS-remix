@@ -1,9 +1,9 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
-import { NavBar, NavSandwhich, NavItem, NavDropDown, NavButton } from "components/NavBar";
-import Route from "components/route";
-import { SideBar } from "components/SideBar";
-import { useAuthState } from "components/useAuthState";
+import { NavBar, NavSandwhich, NavItem, NavDropDown, NavButton } from "~/navs/NavBar";
+import Route from "~/navs/route";
+import { SideBar } from "~/navs/SideBar";
+import { useAuthState } from "~/hooks/useAuthState";
 import { signout } from "utils/firebaseClient";
 import stylesheet from "./tailwind.css";
 

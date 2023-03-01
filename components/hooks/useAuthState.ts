@@ -1,4 +1,4 @@
-import { auth } from "../utils/firebaseClient";
+import { auth } from "../../utils/firebaseClient";
 import { useMemo, useEffect, useState } from "react";
 import serverConfig from "server.config";
 import { onAuthStateChanged } from "firebase/auth";

@@ -1,95 +1,43 @@
-import { Forum, ForumButton, ForumInput } from "../../../components/Forum";
-import { useEffect, useRef, useState } from "react";
-import { useForumValidation, validEmail, validPassword } from "../../../components/forumValidation";
-import type { Request } from "@remix-run/node";
-import { auth, signup } from "utils/firebaseClient";
-import { useAuthState } from "components/useAuthState";
+import { createContext, useEffect, useState } from "react";
+import { BuisnessCredentialsForum } from "./BuissnessForum";
+import { UserCredentialForm } from "./UserForums";
+import { Request, json } from "@remix-run/node";
+import { createAccount } from "db/controllers/accountController";
+import { mongoHandlerAlwaysResolve } from "utils/httpHandler";
+import { AccountBuilder } from "buisnesObjects/account";
 
-type UserLogin = { email: string; password: string; confirmPassword: string };
+export async function action({ request }: { request: Request }) {
+    let body = await request.json();
 
-const UserCredentialForm = () => {
-    const forum = useRef(null);
-    const [update, submit, error, setError] = useForumValidation<UserLogin>(
-        {
-            email: "",
-            password: "",
-            confirmPassword: "",
-        },
-        (state: UserLogin) => {
-            if (state.password !== state.confirmPassword) {
-                return "passwords do not match";
-            }
+    let account = new AccountBuilder(body).build();
 
-            if (!validEmail(state.email)) {
-                return "bad email";
-            }
+    let res = await mongoHandlerAlwaysResolve(createAccount(account));
 
-            if (!validPassword(state.password)) {
-                return "bad password";
-            }
-            return "";
-        },
-        (state: UserLogin) => {
-            return signup(state.email, state.password);
-        }
-    );
+    return new Response(JSON.stringify(res.data), {
+        status: res.status,
+    });
+}
 
-    return (
-        <Forum>
-            <h1 className="text-primary font-title text-2xl m-0 p-0">Personal</h1>
-            <ForumInput name="email" onTyping={(e) => update(e.target.value, "email")} type="text" label="Email" />
-            <ForumInput name="password" onTyping={(e) => update(e.target.value, "password")} type="text" label="Password" />
-            <ForumInput onTyping={(e) => update(e.target.value, "confirmPassword")} type="text" label="Confirm Password" />
-            <h2 className="py-2 text-red-600">{error}</h2>
-            <ForumButton
-                onClick={(e) => {
-                    submit()
-                        .then(() => {
-                            window.location.href = "/home";
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                }}
-            >
-                Sign Up
-            </ForumButton>
-        </Forum>
-    );
+type UserContextADT = {
+    buisness: BusinessADT | undefined;
+    setBuisness: React.Dispatch<React.SetStateAction<BusinessADT | undefined>>;
+    user: UserADT | undefined;
+    setUser: React.Dispatch<React.SetStateAction<UserADT | undefined>>;
 };
 
+export const UserContext = createContext<UserContextADT>({} as UserContextADT);
+
 export default function Register() {
-    useAuthState();
-
-    const [registerFeild, setRegisterFeild] = useState<AccountInfoADT>({
-        user: {} as UserADT,
-        business: {} as BusinessADT,
-    });
-
-    const setUserData = (data: string, key: keyof UserADT) => {
-        setRegisterFeild((oldRegisterField) => {
-            oldRegisterField["user"][key] = data;
-            return oldRegisterField;
-        });
-    };
-
-    const setBusinessData = (data: any, key: keyof AccountInfoADT["business"]) => {
-        setRegisterFeild((oldRegisterField) => {
-            oldRegisterField["business"][key] = data;
-            return oldRegisterField;
-        });
-    };
-
-    // const [poster, isFetching] = useNextLoading(async () => {
-    //     // await login(registerFeild.user.email, registerFeild.user.);
-    //     re
-    // });
+    const [buisness, setBuisness] = useState<BusinessADT | undefined>();
+    const [user, setUser] = useState<UserADT | undefined>();
 
     return (
         <div className="w-full h-full base-100">
             <div className="w-full flex flex-col justify-center content-center">
                 <div className="w-full flex flex-row gap-20 p-10 justify-center">
-                    <UserCredentialForm />
+                    <UserContext.Provider value={{ buisness, setBuisness, user, setUser }}>
+                        {typeof user === "undefined" ? <UserCredentialForm /> : <BuisnessCredentialsForum />}
+                    </UserContext.Provider>
                 </div>
             </div>
         </div>

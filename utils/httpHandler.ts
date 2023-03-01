@@ -1,13 +1,15 @@
-export const httpHandlerAlwaysResolve = <T>(promise: Promise<T>) => {
-    return new Promise<HTTPSTATUS<T>>((resolve) => {
+import { MongooseError } from "mongoose";
+
+export const mongoHandler = (promise: Promise<any>) => {
+    return new Promise<HTTPSTATUS<any>>((resolve) => {
         promise
             .then((data) => {
                 resolve({ status: 200, data });
             })
-            .catch((data) => {
-                resolve({ status: 500, data });
+            .catch((error: MongooseError) => {
+                console.error(error.stack);
+
+                resolve({ status: 500, data: error.message });
             });
     });
 };
-
-

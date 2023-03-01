@@ -43,6 +43,7 @@ const getToken = () => {
 
 const authorize = async (firebaseAuth: Promise<any>) => {
     await firebaseAuth;
+    
     let token = await getToken();
 
     return fetch(`/api/auth`, {

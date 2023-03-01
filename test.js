@@ -1,0 +1,11 @@
+let x = {
+    "code": "auth/email-already-in-use",
+    "customData": {
+        "appName": "[DEFAULT]",
+        "_tokenResponse": {
+            "error": { "code": 400, "message": "EMAIL_EXISTS", "errors": [{ "message": "EMAIL_EXISTS", "domain": "global", "reason": "invalid" }] }
+        }
+    },
+    "name": "FirebaseError"
+}
+

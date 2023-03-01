@@ -5,6 +5,7 @@ import compression from "compression";
 import morgan from "morgan";
 import { createRequestHandler } from "@remix-run/express";
 import { authMiddleWare } from "./middleware";
+import "./db/mongodb";
 
 dotenv.config();
 

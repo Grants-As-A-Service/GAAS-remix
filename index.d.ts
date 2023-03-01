@@ -20,18 +20,18 @@ declare global {
         fte: number;
         pte: number;
         annualRevenue: number;
-        yearOfInception: number;
+        yearOfInception: Date;
         projects: string[];
     };
 
     type AccountInfo = {
-        user: UserADT;
-        business: BusinessADT;
+        user: User;
+        buisness: Business;
     };
 
     type ChildProps = { children: React.ReactNode };
 
-    type ImpactTag = {
+    type Tag = {
         name: string;
         strength: number;
         description: string;
@@ -41,16 +41,16 @@ declare global {
     type Project = {
         name: string;
         description: string;
-        startDate: string;
-        endDate: string;
+        startDate: Date;
+        endDate: Date;
         capex: number;
         annualOpex: number;
-        tags: ImpactTag[];
+        tags: Tag[];
         status: string;
     };
 
     interface ProjectADT extends Project {
-        [key: string]: string | number | ImpactTag[];
+        [key: string]: string | number | Tag[] | Date;
     }
 
     interface UserADT extends User {
@@ -58,11 +58,11 @@ declare global {
     }
 
     interface BusinessADT extends Business {
-        [key: string]: string | number | string[];
+        [key: string]: string | number | string[] | Date;
     }
 
     interface AccountInfoADT extends AccountInfo {
-        [key: string]: UserADT | BusinessADT;
+        [key: string]: UserADT | BusinessADT | Date;
     }
 
     type Grant = {

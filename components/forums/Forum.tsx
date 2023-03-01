@@ -23,6 +23,24 @@ export const ForumButton = ({ children, onClick }: ChildProps & { onClick: React
     </div>
 );
 
+export const ForumDropDown = ({ label, options, setOption }: { label: string; options: Array<string>; setOption: (option: string) => void }) => {
+    return (
+        <div className="form-control">
+            <label className="label">
+                <span className="label-text">{label}</span>
+            </label>
+            <select onChange={(event) => setOption(event.target.value)} className="select select-bordered w-full max-w-xs">
+                <option disabled selected>
+                    {label}
+                </option>
+                {options.map((option) => {
+                    return <option>{option}</option>;
+                })}
+            </select>
+        </div>
+    );
+};
+
 type ForumInputProps = {
     onTyping: (e: ChangeEvent<HTMLInputElement>) => void;
     type: HTMLInputTypeAttribute;

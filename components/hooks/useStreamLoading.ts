@@ -16,16 +16,28 @@ export const useStreamLoading = (requestor: PostRequestor) => {
     const [isFetching, setIsFetching] = useState(false);
 
     return [
-        async () => {
+        () => {
             setIsFetching(true);
+            return new Promise((resolve, reject) => {
+                requestor()
+                    .then(async (res) => {
+                        setIsFetching(false);
+                        startTransition(() => {});
 
-            let res = await requestor();
+                        if (!res.ok) {
+                            console.log(res);
 
-            setIsFetching(false);
+                            console.log(await res.text())
+                            console.log(await res.json())
+                            console.log(res)
 
-            startTransition(() => {});
-
-            return res;
+                            reject(res.headers.get("Status"));
+                        } else {
+                            resolve(res);
+                        }
+                    })
+                    .catch(reject);
+            });
         },
         isFetching,
     ] as [() => Promise<Response>, boolean];
