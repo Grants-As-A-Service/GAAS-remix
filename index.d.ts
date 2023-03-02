@@ -1,7 +1,7 @@
 import type { Response, Request, NextFunction } from "express";
 
 declare global {
-    type HTTPSTATUS<T> = { status: number; data: T };
+    type HTTPSTATUS<T> = [T, number] 
 
     type User = {
         name: string;

@@ -34,7 +34,8 @@ export const authMiddleWare = (request: Request, response: Response, next: NextF
             .then((cookie) => {
                 if (cookie) {
                     verifyToken(cookie)
-                        .then(() => {
+                        .then((email) => {
+                            request.headers["user"] = email;
                             next();
                         })
                         .catch((error) => {

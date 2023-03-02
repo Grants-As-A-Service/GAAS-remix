@@ -15,17 +15,25 @@ const getCode = (mongoCode: number) => {
     return code ? code : 500;
 };
 
-export const mongoHandler = (promise: Promise<any>) => {
-    return new Promise<HTTPSTATUS<any>>((resolve) => {
+export const mongoHandler = <T>(promise: Promise<T>) => {
+    return new Promise<HTTPSTATUS<T>>((resolve) => {
         promise
             .then((data) => {
-                resolve({ status: 200, data });
+                resolve([data, 200]);
             })
             .catch((error: MongoServerError) => {
                 console.error(error);
                 let code = getCode(error.code as number);
-                resolve({ status: code, data: error.message });
+                resolve([null as T, code]);
             });
+    });
+};
+
+export const multiHandler = <T, R>(promiseArray: Array<Promise<R>>): [T, number] => {
+    return Promise.all(promiseArray).then((results): Array<HTTPSTATUS<T>> => {
+        return results.map((returns): HTTPSTATUS<T> => {
+            return returns[0];
+        });
     });
 };
 

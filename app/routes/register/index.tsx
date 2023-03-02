@@ -12,10 +12,10 @@ export async function action({ request }: { request: Request }) {
 
     let account = bodyParserHandler(new AccountBuilder(body));
 
-    let res = await mongoHandler(createAccount(account));
+    let [res, status] = await mongoHandler(createAccount(account));
 
-    return new Response(JSON.stringify(res.data), {
-        status: res.status,
+    return new Response(JSON.stringify(res), {
+        status: status,
     });
 }
 

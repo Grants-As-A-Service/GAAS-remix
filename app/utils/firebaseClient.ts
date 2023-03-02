@@ -46,8 +46,6 @@ const authorize = async (firebaseAuth: Promise<any>) => {
 
     let token = await getToken();
 
-    console.log(token);
-
     return fetch(`/api/auth`, {
         method: "post",
         body: JSON.stringify({ token }),

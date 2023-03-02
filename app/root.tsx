@@ -7,6 +7,7 @@ import { signout } from "./utils/firebaseClient";
 import stylesheet from "./tailwind.css";
 import { auth } from "../cookies";
 import { pathNameSlicer } from "./utils/httpHandler";
+import serverConfig from "../server.config";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
 
@@ -20,9 +21,9 @@ export async function loader({ request }: LoaderArgs) {
     const cookieHeader = request.headers.get("Cookie");
     const cookie = (await auth.parse(cookieHeader)) || undefined;
 
-    const shouldRedirect = pathNameSlicer(request.url) === "/" && cookie !== undefined;
+    let currentPath = pathNameSlicer(request.url);
 
-    console.log(shouldRedirect, cookie);
+    const shouldRedirect = serverConfig.unauthorizedURlPaths.some((authorizedPath) => currentPath === authorizedPath) && cookie !== undefined;
 
     return new Response(JSON.stringify({ auth: cookie }), {
         ...(shouldRedirect ? { status: 302 } : {}),

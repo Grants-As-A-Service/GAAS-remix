@@ -2,7 +2,9 @@ import { AccountZod } from "buisnesObjects/account";
 import { HydratedDocument } from "mongoose";
 import { AccountModel } from "../models/account";
 
-const getAccount = () => {};
+const getAccount = (email: string) => {
+    return AccountModel.findOne({ "user.email": email });
+};
 
 const createAccount = (account: AccountInfo) => {
     return new Promise((resolve, reject) => {
