@@ -3,7 +3,7 @@ import { BuisnessCredentialsForum } from "./BuissnessForum";
 import { UserCredentialForm } from "./UserForums";
 import { Request, json } from "@remix-run/node";
 import { createAccount } from "db/controllers/accountController";
-import { bodyParserHandler, mongoHandler } from "utils/httpHandler";
+import { bodyParserHandler, mongoHandler } from "~/utils/httpHandler";
 import { AccountBuilder, AccountError } from "buisnesObjects/account";
 import { ZodError, ZodParsedType } from "zod";
 
@@ -22,15 +22,15 @@ export async function action({ request }: { request: Request }) {
 type UserContextADT = {
     buisness: BusinessADT | undefined;
     setBuisness: React.Dispatch<React.SetStateAction<BusinessADT | undefined>>;
-    user: UserADT | undefined;
-    setUser: React.Dispatch<React.SetStateAction<UserADT | undefined>>;
+    user: User | undefined;
+    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 };
 
 export const UserContext = createContext<UserContextADT>({} as UserContextADT);
 
 export default function Register() {
     const [buisness, setBuisness] = useState<BusinessADT | undefined>();
-    const [user, setUser] = useState<UserADT | undefined>();
+    const [user, setUser] = useState<User | undefined>();
 
     return (
         <div className="w-full h-full base-100">

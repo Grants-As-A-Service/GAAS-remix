@@ -43,8 +43,10 @@ const getToken = () => {
 
 const authorize = async (firebaseAuth: Promise<any>) => {
     await firebaseAuth;
-    
+
     let token = await getToken();
+
+    console.log(token);
 
     return fetch(`/api/auth`, {
         method: "post",
@@ -63,6 +65,10 @@ export const signup = (email: string, password: string) => {
 };
 
 export const signout = () => {
+    if (auth.currentUser) {
+        firebaseSignout();
+    }
     removeAuth();
-    firebaseSignout();
+
+    window.location.href = "/";
 };

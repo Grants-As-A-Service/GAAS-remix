@@ -1,42 +1,53 @@
-import { useContext } from "react";
+import { AccountZod } from "buisnesObjects/account";
+import { useContext, useState } from "react";
 import { UserContext } from ".";
-import { Forum, ForumInput, ForumDropDown, ForumButton } from "../../../components/forums/Forum";
-import { useForumValidation, useForumValidationPost } from "../../../components/hooks/forumValidation";
+import { Forum, ForumInput, ForumDropDown, ForumButton } from "../../components/forums/Forum";
+import { useForumValidation, useForumValidationPost } from "../../components/hooks/forumValidation";
 import forumData from "../../../FormData.json";
 
 export const BuisnessCredentialsForum = () => {
     const { user } = useContext(UserContext);
+    const [initState] = useState<Business>({
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        province: "",
+        postalCode: "",
+        industry: "",
+        fte: 0,
+        pte: 0,
+        annualRevenue: 0,
+        yearOfInception: new Date(),
+        projects: [],
+    });
 
     const [update, submit, isFetching, error, setError] = useForumValidationPost<BusinessADT>(
-        {
-            name: "",
-            phone: "",
-            address: "",
-            city: "",
-            province: "",
-            postalCode: "",
-            industry: "",
-            fte: 0,
-            pte: 0,
-            annualRevenue: 0,
-            yearOfInception: new Date(),
-            projects: [],
-        },
+        initState,
         (state: BusinessADT) => {
             if (state.phone.length !== 10) {
                 return "bad phone number";
+            }
+
+            for (const [key, value] of Object.entries(state)) {
+                //@ts-ignore
+                if (initState[key] === value) {
+                    return "enter a value for " + key;
+                }
             }
 
             return "";
         },
         (state: BusinessADT) => {
             return new Promise((resolve, reject) => {
+                let account: AccountInfo = {
+                    buisness: state,
+                    user: user as User,
+                };
+
                 fetch("/register", {
                     method: "post",
-                    body: JSON.stringify({
-                        buisness: state,
-                        user,
-                    }),
+                    body: JSON.stringify(account),
                 })
                     .then(resolve)
                     .catch((error) => {

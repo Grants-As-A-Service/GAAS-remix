@@ -1,5 +1,4 @@
 import { Link } from "@remix-run/react";
-import { useAuthState } from "~/hooks/useAuthState";
 
 export default function RootLayout() {
     return (

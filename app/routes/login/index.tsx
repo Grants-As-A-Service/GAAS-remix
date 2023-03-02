@@ -1,3 +1,9 @@
-import Login from "~/routes/LoginForum";
+import Login from "../LoginForum";
 
-export default <Login done={() => (window.location.href = "/home")} />;
+export default () => (
+    <Login
+        done={() => {
+            window.location.href = "/home";
+        }}
+    />
+);

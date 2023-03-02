@@ -25,13 +25,7 @@ export const useStreamLoading = (requestor: PostRequestor) => {
                         startTransition(() => {});
 
                         if (!res.ok) {
-                            console.log(res);
-
-                            console.log(await res.text())
-                            console.log(await res.json())
-                            console.log(res)
-
-                            reject(res.headers.get("Status"));
+                            reject(res.statusText);
                         } else {
                             resolve(res);
                         }

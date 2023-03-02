@@ -60,7 +60,7 @@ export const NavButton = ({ name, onClick }: { name: string; onClick: () => void
     return (
         <div className="flex-0">
             <button className="btn btn-ghost" onClick={onClick}>
-                <span className="text-primary inline-flex text-lg">{name}</span>
+                <span className="text-primary inline-flex text-lg lowercase">{name}</span>
             </button>
         </div>
     );

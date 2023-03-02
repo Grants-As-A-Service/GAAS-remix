@@ -1,6 +1,7 @@
-import { verifyToken } from "./utils/firebaseAdmin";
+import { verifyToken } from "./firebaseAdmin";
 import serverconfig from "./server.config.js";
 import { NextFunction, Request, Response } from "express";
+import { auth } from "./cookies";
 
 //check if the path needs auth, to add unrestricted paths check server.config
 const pathWihoutAuth = (request: Request) => {
@@ -18,25 +19,32 @@ const pathWihoutAuth = (request: Request) => {
     return true;
 };
 
-export const authMiddleWare = async (request: Request, response: Response, next: NextFunction) => {
+export const authMiddleWare = (request: Request, response: Response, next: NextFunction) => {
     if (pathWihoutAuth(request)) {
         next();
     } else {
         const fail = () => {
+            console.log("failed");
+            response.clearCookie("auth");
             response.redirect("/");
+            response.end();
         };
 
-        let token = request.headers.cookie?.split("=")[1];
-
-        if (token) {
-            verifyToken(token)
-                .then(() => next())
-                .catch((error) => {
-                    console.log(error);
+        auth.parse(request.headers.cookie as string)
+            .then((cookie) => {
+                if (cookie) {
+                    verifyToken(cookie)
+                        .then(() => {
+                            next();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            fail();
+                        });
+                } else {
                     fail();
-                });
-        } else {
-            fail();
-        }
+                }
+            })
+            .catch((_) => fail());
     }
 };

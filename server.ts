@@ -6,12 +6,17 @@ import morgan from "morgan";
 import { createRequestHandler } from "@remix-run/express";
 import { authMiddleWare } from "./middleware";
 import "./db/mongodb";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const BUILD_DIR = path.join(process.cwd(), "build");
 
 const app = express();
+
+app.use(cookieParser());
+
+app.use(authMiddleWare);
 
 app.use(compression());
 
@@ -25,8 +30,6 @@ app.use("/build", express.static("public/build", { immutable: true, maxAge: "1y"
 app.use(express.static("public", { maxAge: "1h" }));
 
 app.use(morgan("tiny"));
-
-app.use(authMiddleWare);
 
 app.all(
     "*",
@@ -44,6 +47,7 @@ app.all(
               mode: process.env.NODE_ENV,
           })
 );
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
