@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { signup } from "~/utils/firebaseClient";
-import { UserContext } from ".";
-import { Forum, ForumInput, ForumButton } from "../../components/forums/Forum";
-import { useForumValidationPost, validEmail, validPassword } from "../../components/hooks/forumValidation";
+import { UserContext } from "../routes/register";
+import { Forum, ForumInput, ForumButton } from "./forums/Forum";
+import { useForumValidationPost, validEmail, validPassword } from "./hooks/forumValidation";
 
 type UserLogin = { email: string; password: string; confirmPassword: string; number: string; name: string };
 
@@ -47,6 +47,7 @@ export const UserCredentialForm = () => {
                     })
                     .catch((error) => {
                         if (error.customData._tokenResponse.error.message === "EMAIL_EXISTS") {
+                            
                             window.location.href = "/login";
                         }
                         reject(error);

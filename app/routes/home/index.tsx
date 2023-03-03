@@ -1,16 +1,20 @@
-import { json, LoaderArgs } from "@remix-run/node";
+import { ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
 import { mongoHandler, multiHandler } from "../../utils/httpHandler";
 import { getAccount } from "../../../db/controllers/accountController";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getProjects } from "db/controllers/projectController";
+import { useEffect } from "react";
+import { ErrorComp } from "../../components/error";
 
 export const loader = async ({ request }: LoaderArgs) => {
     let userEmail = request.headers.get("user") as string;
 
-    let [[account, projects], status] = await multiHandler<[AccountInfo, Project], AccountInfo | Project>([getAccount(userEmail), getProjects()]);
+    let [[account, projects], status] = await multiHandler<[AccountInfo, Project]>([getAccount(userEmail), getProjects()]);
 
-    return json({ account, projects }, { status: status });
+    return json({ account, projects: [projects] }, { status: status });
 };
+
+export const ErrorBoundary = ErrorComp;
 
 export default function Dashboard() {
     const { account, projects } = useLoaderData<typeof loader>();
@@ -22,36 +26,13 @@ export default function Dashboard() {
                     <div className="mb-2 py-4 text-center lg:py-10 lg:text-left">
                         <h1 className="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-4xl">Welcome {account.user.name}</h1>
                     </div>
-                    <div className="flex flex-row gap-10"></div>
 
-                    <div>
-                        <div>
-                            {projects.map((project, i) => {
-                                return (
-                                    <div>
-                                        {/* <div key={i} className="mt-4">
-                                            <div>
-                                                <CardTitle tag="h5">{project.name}</CardTitle>
-                                            </div>
-                                            <CardBody>
-                                                <CardText>{project.description}</CardText>
-                                            </CardBody>
-                                            <CardFooter>
-                                                <Button color="primary" onClick={() => swapScreen("ProjectView", { project })}>
-                                                    View
-                                                </Button>
-                                            </CardFooter>
-                                        </div> */}
-                                    </div>
-                                );
-                            })}
-                            {/* <Col xs={12} md={6} lg={3} className="pt-4">
-                                <Button color="success" outline onClick={() => swapScreen("ProjectOnboard")}>
-                                    + Add Project
-                                </Button>
-                            </Col> */}
-                        </div>
-                    </div>
+                    <h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">Your Projects</h1>
+
+                    <div className="mb-2 flex flex-row gap-10"></div>
+                    <Link to="/home/create/project" className="btn btn-md btn-secondary">
+                        Create a Project
+                    </Link>
                 </div>
             </div>
         </div>

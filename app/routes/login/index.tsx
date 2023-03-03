@@ -1,4 +1,4 @@
-import Login from "../LoginForum";
+import Login from "../../components/LoginForum";
 
 export default () => (
     <Login

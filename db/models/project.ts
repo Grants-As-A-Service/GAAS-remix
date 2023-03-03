@@ -1,6 +1,10 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const Project = new Schema({
+const Project = new mongoose.Schema({
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
+    },
     name: {
         type: String,
         required: true,
@@ -43,4 +47,4 @@ const Project = new Schema({
     ],
 });
 
-export const ProjectModel = model("project", Project);
+export const ProjectModel = mongoose.models.Account || mongoose.model("project", Project);

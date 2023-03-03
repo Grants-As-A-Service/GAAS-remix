@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 
-const AccountSchema = new mongoose.Schema({
+export const AccountSchema = new mongoose.Schema({
     user: {
         name: {
-            type: String,
-            index: true,
-            unique: true,
+            type: String
         },
         email: {
             type: String,

@@ -1,5 +1,5 @@
-import { ForumButton, ForumInput, Forum } from "../components/forums/Forum";
-import { useForumValidationPost, validEmail, validPassword } from "../components/hooks/forumValidation";
+import { ForumButton, ForumInput, Forum } from "./forums/Forum";
+import { useForumValidationPost, validEmail, validPassword } from "./hooks/forumValidation";
 import { login, signup } from "~/utils/firebaseClient";
 
 type UserLogin = { email: string; password: string };

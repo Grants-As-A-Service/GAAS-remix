@@ -1,9 +1,9 @@
 import { AccountZod } from "buisnesObjects/account";
 import { useContext, useState } from "react";
-import { UserContext } from ".";
-import { Forum, ForumInput, ForumDropDown, ForumButton } from "../../components/forums/Forum";
-import { useForumValidation, useForumValidationPost } from "../../components/hooks/forumValidation";
-import forumData from "../../../FormData.json";
+import { UserContext } from "../routes/register";
+import { Forum, ForumInput, ForumDropDown, ForumButton } from "./forums/Forum";
+import { useForumValidation, useForumValidationPost } from "./hooks/forumValidation";
+import forumData from "../../FormData.json";
 
 export const BuisnessCredentialsForum = () => {
     const { user } = useContext(UserContext);

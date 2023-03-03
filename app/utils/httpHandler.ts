@@ -29,12 +29,11 @@ export const mongoHandler = <T>(promise: Promise<T>) => {
     });
 };
 
-export const multiHandler = <T, R>(promiseArray: Array<Promise<R>>): [T, number] => {
-    return Promise.all(promiseArray).then((results): Array<HTTPSTATUS<T>> => {
-        return results.map((returns): HTTPSTATUS<T> => {
-            return returns[0];
-        });
-    });
+export const multiHandler = <T>(promiseArray: Array<Promise<any>>): Promise<HTTPSTATUS<T>> => {
+    return mongoHandler<T>(
+        //@ts-ignore
+        Promise.all(promiseArray)
+    );
 };
 
 export const bodyParserHandler = <T>(builder: Builder<T>): T => {
