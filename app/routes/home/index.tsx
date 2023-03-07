@@ -1,7 +1,7 @@
 import { ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
 import { mongoHandler, multiHandler } from "../../utils/httpHandler";
 import { getAccount } from "../../../db/controllers/accountController";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, ShouldRevalidateFunction, useLoaderData } from "@remix-run/react";
 import { getProjects } from "db/controllers/projectController";
 import { useEffect } from "react";
 import { ErrorComp } from "../../components/error";

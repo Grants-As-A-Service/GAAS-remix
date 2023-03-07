@@ -1,10 +1,28 @@
+import { ActionArgs } from "@remix-run/node";
+import { ProjectBuilder } from "buisnesObjects/project";
+import { createProject, getProjects } from "db/controllers/projectController";
 import { useState } from "react";
+import { bodyParserHandler, mongoHandler } from "~/utils/httpHandler";
 
+
+
+
+// export async function action({ request }: ActionArgs) {
+//     let email = request.headers.get("user");
+
+//     let body = bodyParserHandler(new ProjectBuilder(await request.json()));
+
+//     let [res, status] = await mongoHandler(createProject(body));
+
+//     return new Response(null, {
+//         status: 200,
+//     });
+// }
 
 export default function ProjectOnbaord() {
     const [open, setOpen] = useState(false);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    
+
     const updateTags = function (newTag: string) {
         setSelectedTags([...selectedTags, newTag]);
     };

@@ -10,13 +10,13 @@ import cookieParser from "cookie-parser";
 
 dotenv.config();
 
+if (!process.env.type) {
+    throw new Error("no credentials found, need env");
+}
+
 const BUILD_DIR = path.join(process.cwd(), "build");
 
 const app = express();
-
-app.use(cookieParser());
-
-app.use(authMiddleWare);
 
 app.use(compression());
 
@@ -30,6 +30,8 @@ app.use("/build", express.static("public/build", { immutable: true, maxAge: "1y"
 app.use(express.static("public", { maxAge: "1h" }));
 
 app.use(morgan("tiny"));
+
+app.use(authMiddleWare());
 
 app.all(
     "*",

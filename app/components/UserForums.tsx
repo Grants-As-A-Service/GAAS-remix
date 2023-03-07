@@ -47,7 +47,6 @@ export const UserCredentialForm = () => {
                     })
                     .catch((error) => {
                         if (error.customData._tokenResponse.error.message === "EMAIL_EXISTS") {
-                            
                             window.location.href = "/login";
                         }
                         reject(error);

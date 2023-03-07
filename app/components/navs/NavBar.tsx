@@ -69,9 +69,15 @@ export const NavButton = ({ name, onClick }: { name: string; onClick: () => void
 export const NavItem = ({ name, route }: { name: string; route?: string }) => {
     return (
         <div className="flex-0">
-            <Link to={route ? route : name} className="btn btn-ghost">
-                <span className="font-title text-primary inline-flex text-3xl">{name}</span>
-            </Link>
+            {route ? (
+                <Link to={route} className="btn btn-ghost">
+                    <span className="font-title text-primary inline-flex text-3xl">{name}</span>
+                </Link>
+            ) : (
+                <button className="btn btn-ghost">
+                    <span className="font-title text-primary inline-flex text-3xl">{name}</span>
+                </button>
+            )}
         </div>
     );
 };

@@ -5,9 +5,9 @@ import { Request, json } from "@remix-run/node";
 import { createAccount } from "db/controllers/accountController";
 import { bodyParserHandler, mongoHandler } from "~/utils/httpHandler";
 import { AccountBuilder, AccountError } from "buisnesObjects/account";
-import { ZodError, ZodParsedType } from "zod";
-import Login from "../../components/LoginForum";
 
+
+//register post
 export async function action({ request }: { request: Request }) {
     let body = await request.json();
 

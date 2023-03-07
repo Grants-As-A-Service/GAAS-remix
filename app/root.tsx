@@ -8,6 +8,7 @@ import stylesheet from "./tailwind.css";
 import { auth } from "../cookies";
 import { pathNameSlicer } from "./utils/httpHandler";
 import serverConfig from "../server.config";
+import { getAuthState } from "./utils/browserCookieRead";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
 
@@ -17,26 +18,7 @@ export const meta: MetaFunction = () => ({
     viewport: "width=device-width,initial-scale=1",
 });
 
-export async function loader({ request }: LoaderArgs) {
-    const cookieHeader = request.headers.get("Cookie");
-    const cookie = (await auth.parse(cookieHeader)) || undefined;
-
-    let currentPath = pathNameSlicer(request.url);
-
-    const shouldRedirect = serverConfig.unauthorizedURlPaths.some((authorizedPath) => currentPath === authorizedPath) && cookie !== undefined;
-
-    return new Response(JSON.stringify({ auth: cookie }), {
-        ...(shouldRedirect ? { status: 302 } : {}),
-        headers: {
-            ...(shouldRedirect ? { Location: "/home" } : {}),
-            "Content-Type": "application/json; charset=utf-8",
-        },
-    });
-}
-
 export default function App() {
-    const { auth } = useLoaderData<typeof loader>();
-
     return (
         <html lang="en" data-theme="night">
             <head>
@@ -47,9 +29,9 @@ export default function App() {
                 <SideBar>
                     <NavBar>
                         <NavSandwhich />
-                        <NavItem name="GAAS" route="/" />
+                        <NavItem name="GAAS" />
                         <Route />
-                        {auth ? (
+                        {getAuthState() ? (
                             <NavButton
                                 name="sign out"
                                 onClick={() => {

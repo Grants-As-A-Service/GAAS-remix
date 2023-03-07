@@ -1,51 +1,61 @@
 import { verifyToken } from "./firebaseAdmin";
 import serverconfig from "./server.config.js";
 import { NextFunction, Request, Response } from "express";
-import { auth } from "./cookies";
+import { auth, cookieParser } from "./cookies";
 
 //check if the path needs auth, to add unrestricted paths check server.config
-const pathWihoutAuth = (request: Request) => {
-    let requestType = request.headers["sec-fetch-dest"];
-    //ensure request is asking for html page and not static content, security flaw here but it works
-
-    if (requestType && requestType === "document") {
-        //check if the requested path is one in server config that allows a connection without auth
-        if (serverconfig.unauthorizedURlPaths.some((authorizedPath) => request.path === authorizedPath)) {
-            return true;
-        } else {
-            return false;
-        }
+const pathCheck = (paths: Array<string>, request: Request, auth: () => void, noAuth: () => void) => {
+    //check if the requested path is one in server config that allows a connection without auth
+    if (paths.some((authorizedPath) => request.path === authorizedPath)) {
+        noAuth();
+    } else {
+        auth();
     }
-    return true;
 };
 
-export const authMiddleWare = (request: Request, response: Response, next: NextFunction) => {
-    if (pathWihoutAuth(request)) {
-        next();
-    } else {
-        const fail = () => {
-            console.log("failed");
-            response.clearCookie("auth");
-            response.redirect("/");
-            response.end();
-        };
-
-        auth.parse(request.headers.cookie as string)
-            .then((cookie) => {
-                if (cookie) {
-                    verifyToken(cookie)
+export const authMiddleWare = () => (request: Request, response: Response, next: NextFunction) => {
+    pathCheck(
+        serverconfig.unAuthAPIRoutes,
+        request,
+        () => {
+            //examine cookie, catch if no cookie or other error
+            cookieParser(auth, request.headers.cookie)
+                //there is a cookie
+                .then((cookie) => {
+                    //verify the cookie
+                    verifyToken(cookie as string)
+                        //valid token returns an email
                         .then((email) => {
+                            //assign email to req header so action methods can fetch
                             request.headers["user"] = email;
-                            next();
+                            //check that the user is not accessing login/register//
+                            pathCheck(serverconfig.unauthorizedURlPaths, request, next, () => {
+                                response.redirect("/home");
+                                response.end();
+                            });
                         })
+                        //invalid token, delete cookie and go to /
                         .catch((error) => {
                             console.log(error);
-                            fail();
+                            response.clearCookie("auth");
+                            response.redirect("/");
+                            response.end();
                         });
-                } else {
-                    fail();
-                }
-            })
-            .catch((_) => fail());
-    }
+                })
+                //there is no cookie
+                .catch(() => {
+                    //check not going down auth path, can go to login, register, home
+                    pathCheck(
+                        serverconfig.unauthorizedURlPaths,
+                        request,
+                        () => {
+                            response.redirect("/");
+                            response.end();
+                        },
+                        next
+                    );
+                });
+        },
+        next
+    );
 };
