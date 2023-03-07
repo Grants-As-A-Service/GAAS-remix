@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export const ErrorComp: ErrorBoundaryComponent = ({ error }) => {
     useEffect(() => {
         setTimeout(() => {
-            window.location.reload();
+            //window.location.reload();
         }, 1500);
     });
 

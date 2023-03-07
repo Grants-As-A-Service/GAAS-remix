@@ -5,7 +5,6 @@ export const cookieParser = (parser: Cookie, cookie: any) => {
         parser
             .parse(cookie)
             .then((cookie) => {
-                console.log(cookie);
                 if (cookie) {
                     resolve(cookie);
                 } else {

@@ -15,6 +15,18 @@ const getCode = (mongoCode: number) => {
     return code ? code : 500;
 };
 
+export const responseHandler = (promise: Promise<Response>): Promise<Response> => {
+    return new Promise<Response>((resolve, reject) => {
+        promise.then((response) => {
+            if (!response.ok) {
+                reject(response);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+};
+
 export const mongoHandler = <T>(promise: Promise<T>) => {
     return new Promise<HTTPSTATUS<T>>((resolve) => {
         promise

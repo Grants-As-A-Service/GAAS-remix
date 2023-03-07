@@ -1,21 +1,21 @@
-import { Form } from "@remix-run/react";
+import { Form as Forum } from "@remix-run/react";
 import { HTMLInputTypeAttribute, ChangeEvent, useState } from "react";
 
-export const ForumRemix = ({ children }: ChildProps) => (
-    <Form className="w-full" method="post">
+export const FormRemix = ({ children }: ChildProps) => (
+    <Forum className="w-full" method="post">
         <div className="card flex-shrink-0 w-full h-fit max-w-sm shadow-2xl bg-base-300">
             <div className="card-body">{children}</div>
         </div>
-    </Form>
+    </Forum>
 );
 
-export const Forum = ({ children }: ChildProps) => (
+export const Form = ({ children }: ChildProps) => (
     <div className="card flex-shrink-0 w-full h-fit max-w-sm shadow-2xl bg-base-300">
         <div className="card-body">{children}</div>
     </div>
 );
 
-export const ForumButton = ({ children, onClick }: ChildProps & { onClick: React.MouseEventHandler<HTMLButtonElement> }) => (
+export const FormButton = ({ children, onClick }: ChildProps & { onClick: React.MouseEventHandler<HTMLButtonElement> }) => (
     <div className="form-control mt-6">
         <button className="btn btn-primary" onClick={onClick}>
             {children}
@@ -23,7 +23,7 @@ export const ForumButton = ({ children, onClick }: ChildProps & { onClick: React
     </div>
 );
 
-export const ForumDropDown = ({ label, options, setOption }: { label: string; options: Array<string>; setOption: (option: string) => void }) => {
+export const FormDropDown = ({ label, options, setOption }: { label: string; options: Array<string>; setOption: (option: string) => void }) => {
     return (
         <div className="form-control">
             <label className="label">
@@ -41,7 +41,7 @@ export const ForumDropDown = ({ label, options, setOption }: { label: string; op
     );
 };
 
-type ForumInputProps = {
+type FormInputProps = {
     onTyping: (e: ChangeEvent<HTMLInputElement>) => void;
     type: HTMLInputTypeAttribute;
     placeholder?: string;
@@ -50,7 +50,7 @@ type ForumInputProps = {
     name?: string;
 };
 
-export const ForumInput = ({ onTyping, type, placeholder, label, regex, name }: ForumInputProps) => {
+export const FormInput = ({ onTyping, type, placeholder, label, regex, name }: FormInputProps) => {
     return (
         <div className="form-control">
             <label className="label">

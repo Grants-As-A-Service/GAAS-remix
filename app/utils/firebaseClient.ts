@@ -41,9 +41,7 @@ const getToken = () => {
     return auth.currentUser?.getIdToken(true);
 };
 
-const authorize = async (firebaseAuth: Promise<any>) => {
-    await firebaseAuth;
-
+export const authorize = async () => {
     let token = await getToken();
 
     return fetch(`/api/auth`, {
@@ -55,11 +53,11 @@ const authorize = async (firebaseAuth: Promise<any>) => {
 ///----------------------------------------------------------- used functions
 
 export const login = (email: string, password: string) => {
-    return authorize(firebaseLogin(email, password));
+    return firebaseLogin(email, password);
 };
 
 export const signup = (email: string, password: string) => {
-    return authorize(firebaseSignup(email, password));
+    return firebaseSignup(email, password);
 };
 
 export const signout = () => {

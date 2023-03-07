@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useReducer, useState } from "react";
-import { useRemixStreamLoading, useStreamLoading } from "./useStreamLoading";
+import { responseHandler } from "~/utils/httpHandler";
 
 export const validEmail = (email: string) => {
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
@@ -9,7 +9,7 @@ export const validPassword = (password: string) => {
     return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/.test(password);
 };
 
-export const useForumValidationRemix = <State>(initState: State, condition: (state: State) => string) => {
+export const useFormValidationPost = <State>(initState: State, condition: (state: State) => string, upload: (state: State) => Promise<Response>) => {
     const [error, setError] = useState("");
     const [state, setState] = useState(initState);
 
@@ -27,64 +27,29 @@ export const useForumValidationRemix = <State>(initState: State, condition: (sta
         setError(newError as string);
         return newError;
     };
-
-    const [transition] = useRemixStreamLoading();
-
-    return [update, checkInput, error, setError, transition] as [
-        (data: string, key: keyof State) => void,
-        () => string,
-        string,
-        Dispatch<SetStateAction<string>>,
-        typeof transition
-    ];
-};
-
-export const useForumValidationPost = <State>(initState: State, condition: (state: State) => string, upload: (state: State) => Promise<Response>) => {
-    const [error, setError] = useState("");
-    const [state, setState] = useState(initState);
-
-    const update = (data: string, key: keyof State) => {
-        setState((oldState) => {
-            let newState = structuredClone(oldState);
-            //@ts-ignore
-            newState[key] = data;
-            return newState;
-        });
-    };
-
-    const checkInput = () => {
-        let newError = condition(state);
-        setError(newError as string);
-        return newError;
-    };
-
-    const [poster, isFetching] = useStreamLoading(async () => {
-        return upload(state);
-    });
 
     const submit = () => {
         if (checkInput() === "") {
             return new Promise((resolve, reject) => {
-                poster()
+                responseHandler(upload(state))
                     .then(resolve)
-                    .catch((error) => {
-                        setError(JSON.stringify(error));
+                    .catch((error: Response) => {
+                        setError(error.statusText);
                         reject(error);
                     });
             });
         }
     };
 
-    return [update, submit, isFetching, error, setError] as [
+    return [update, submit, error, setError] as [
         (data: string, key: keyof State) => void,
         () => Promise<Response>,
-        boolean,
         string,
         Dispatch<SetStateAction<string>>
     ];
 };
 
-export const useForumValidation = <State>(initState: State, condition: (state: State) => string, done: (state: State) => void) => {
+export const useFormValidation = <State>(initState: State, condition: (state: State) => string, done: (state: State) => void) => {
     const [error, setError] = useState("");
     const [state, setState] = useState(initState);
 
