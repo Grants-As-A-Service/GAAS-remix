@@ -37,7 +37,7 @@ export default function Login({ done }: { done: () => void }) {
                         <h2 className="py-2 text-red-600">{error}</h2>
                         <FormButton
                             onClick={(e) => {
-                                submit();
+                                submit().then(() => done());
                             }}
                         >
                             Log In
