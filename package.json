@@ -6,7 +6,7 @@
     "dev": "npm-run-all build --parallel \"dev:*\"",
     "dev:node": "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.ts --watch ./server.ts",
     "dev:remix": "remix watch",
-    "start": "cross-env NODE_ENV=production ts-node ./server.ts",
+    "start": "ts-node ./server.ts",
     "typecheck": "tsc"
   },
   "dependencies": {
