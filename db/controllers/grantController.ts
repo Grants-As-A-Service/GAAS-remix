@@ -21,4 +21,4 @@ const createGrant = async (grant: Grant) => {
 	});
 };
 
-export { getGrant, createGrant };
+export { getGrant, getGrants, createGrant };
