@@ -1,6 +1,11 @@
 import { Link } from "@remix-run/react";
+import GrantBusinessMatcher from "~/utils/grantMatcher";
 
 export default function RootLayout() {
+    GrantBusinessMatcher().then(res => {
+        console.log(res);
+    });
+    
     return (
         <div className="from-primary to-secondary text-primary-content grid place-items-center items-start bg-gradient-to-br flex-1">
             <div className="hero-content col-start-1 row-start-1 w-full max-w-7xl flex-col justify-between gap-10 pb-40 lg:flex-row lg:items-end lg:gap-0 xl:gap-20">
