@@ -27,7 +27,6 @@ export const verifyToken = (app: admin.app.App, token: string) => {
 		app.auth()
 			.verifyIdToken(token, true)
 			.then((user) => {
-				console.log(user);
 				resolve({
 					email: user.email as string,
 					userType: user.userType,

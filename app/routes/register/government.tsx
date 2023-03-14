@@ -80,39 +80,25 @@ export default function Government() {
 	};
 
 	return (
-		<>
-			<Form>
-				<h1 className="text-primary font-title text-2xl m-0 p-0">Buisness Info</h1>
-				<FormInput onTyping={(e) => update(e.target.value, "name")} type="text" label="Buisness Name" />
-				<FormInput onTyping={(e) => update(e.target.value, "phone")} type="tel" label="Buisness Phone" />
+		<Form>
+			<h1 className="text-primary font-title text-2xl m-0 p-0">Governmet Form</h1>
+			<FormInput onTyping={(e) => update(e.target.value, "name")} type="text" label="Buisness Name" />
+			<FormInput onTyping={(e) => update(e.target.value, "phone")} type="tel" label="Buisness Phone" />
 
-				<div>
-					<FormInput onTyping={(e) => update(e.target.value, "address")} type="address" label="Address" />
-					<FormInput onTyping={(e) => update(e.target.value, "city")} type="text" label="City" />
-				</div>
-				<div>
-					<FormDropDown
-						label="Province"
-						setOption={(option: string) => update(option, "province")}
-						options={forumData.provinces.map((province) => province.name)}
-					/>
-					<FormInput onTyping={(e) => update(e.target.value, "postalCode")} type="text" label="Postal Code" />
-				</div>
-			</Form>
-			<Form>
-				<h1 className="text-primary font-title text-2xl m-0 p-0">Industry</h1>
-				<FormDropDown label="Industry" setOption={(option: string) => update(option, "industry")} options={forumData.industries} />
-				<div>
-					<FormInput onTyping={(e) => update(e.target.value, "fte")} type="number" label="Full Time Employees" />
-					<FormInput onTyping={(e) => update(e.target.value, "pte")} type="number" label="Part Time Employees" />
-				</div>
-				<FormInput onTyping={(e) => update(e.target.value, "yearOfInception")} type="date" label="Year of Inception" />
-				<FormInput onTyping={(e) => update(e.target.value, "annualRevenue")} type="number" label="Annual Revenue ($)" />
+			<div>
+				<FormInput onTyping={(e) => update(e.target.value, "address")} type="address" label="Address" />
+				<FormInput onTyping={(e) => update(e.target.value, "city")} type="text" label="City" />
+			</div>
+			<div>
+				<FormDropDown
+					label="Province"
+					setOption={(option: string) => update(option, "province")}
+					options={forumData.provinces.map((province) => province.name)}
+				/>
+				<FormInput onTyping={(e) => update(e.target.value, "postalCode")} type="text" label="Postal Code" />
+			</div>
 
-				<h2 className="py-2 text-red-600">{error}</h2>
-
-				<FormButton onClick={(e) => upload()}>Sign Up</FormButton>
-			</Form>
-		</>
+			<FormButton onClick={(e) => upload()}>Sign Up</FormButton>
+		</Form>
 	);
 }

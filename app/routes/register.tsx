@@ -31,8 +31,11 @@ export default function Register() {
 		} else {
 			let props = { type, user };
 			if (user && type) {
-				let route = type === "buisness" ? "/register/buisness" : "/register/government"
-				router.navigateWithProps("/register/buisness", props);
+				let route = type === "buisness" ? "/register/buisness" : "/register/government";
+
+				if (route !== router.current()) {
+					router.navigateWithProps(route, props);
+				}
 			}
 			if (!user && !type && router.current() !== "/register/user") {
 				router.navigateWithProps("/register/user", props);
@@ -47,7 +50,7 @@ export default function Register() {
 		<div className="w-full h-full base-100">
 			<div className="w-full flex flex-col justify-center content-center">
 				<div className="w-full flex flex-row gap-20 p-10 justify-center">
-					<Outlet context={{ buisness, setBuisness, type, setType, user, setUser }} />
+					<Outlet context={{ type, setType, user, setUser }} />
 				</div>
 			</div>
 		</div>
