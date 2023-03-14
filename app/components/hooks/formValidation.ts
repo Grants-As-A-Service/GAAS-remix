@@ -9,7 +9,11 @@ export const validPassword = (password: string) => {
 	return /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/.test(password);
 };
 
-export const useFormValidationPost = <State>(initState: State, condition: (state: State) => string | undefined, upload: (state: State) => Promise<Response>) => {
+export const useFormValidationPost = <State>(
+	initState: State,
+	condition: (state: State) => string | undefined,
+	upload: (state: State) => Promise<Response>
+) => {
 	const [error, setError] = useState("");
 	const [state, setState] = useState(initState);
 
@@ -29,16 +33,18 @@ export const useFormValidationPost = <State>(initState: State, condition: (state
 	};
 
 	const submit = () => {
-		if (checkInput() === "") {
-			return new Promise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
+			if (!checkInput()) {
 				responseHandler(upload(state))
 					.then(resolve)
 					.catch((error: Response) => {
 						setError(error.statusText);
 						reject(error);
 					});
-			});
-		}
+			} else {
+				reject();
+			}
+		});
 	};
 
 	return [update, submit, error, setError] as [(data: string, key: keyof State) => void, () => Promise<Response>, string, Dispatch<SetStateAction<string>>];
@@ -64,7 +70,7 @@ export const useFormValidation = <State>(initState: State, condition: (state: St
 	};
 
 	const submit = () => {
-		if (checkInput() !== undefined) {
+		if (!checkInput()) {
 			done(state);
 		}
 	};
