@@ -25,10 +25,11 @@ export default function Dashboard() {
 				<div className="lg:pl-1 lg:pb-24">
 					<div className="mb-2 py-4 text-center lg:py-10 lg:text-left">
 						<h1 className="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-4xl">Welcome {account.name}</h1>
+						<h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">{userType}</h1>
 					</div>
 
 					<h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">Your Projects</h1>
-					<h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">User Type: {userType}</h1>
+
 					<div className="mb-2 flex flex-row gap-10"></div>
 					<Link to="/home/create/project" className="btn btn-md btn-secondary">
 						Create a Project

@@ -23,7 +23,6 @@ export const BusinessSchema = new mongoose.Schema({
 		type: Date,
 		required: true,
 	},
-	projects: [String],
 });
 
 export const BusinessModel = mongoose.models.Business || mongoose.model("Business", BusinessSchema);

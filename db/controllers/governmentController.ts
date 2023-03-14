@@ -4,10 +4,10 @@ const getGovernment = (email: string) => {
 	return GovernmentModel.findOne({ email: email });
 };
 
-const createGovernment = (gov: Government) => {
+const createGovernment = (gov: Government, accountId: string) => {
 	return new Promise((resolve, reject) => {
 		try {
-			const govDocument = new GovernmentModel(gov);
+			const govDocument = new GovernmentModel({ ...gov, accountId });
 			govDocument.save().then(resolve).catch(reject);
 		} catch (error) {
 			console.log(error);

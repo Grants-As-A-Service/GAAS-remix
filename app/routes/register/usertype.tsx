@@ -5,7 +5,6 @@ import { setUserType } from "~/utils/firebaseClient";
 
 export async function action({ request }: { request: Request }) {
 	let { userType, uid } = await request.json();
-	console.log(userType);
 
 	let admin = init("remix");
 
@@ -17,7 +16,7 @@ export async function action({ request }: { request: Request }) {
 }
 
 export default function UserType() {
-	const { setType, user } = useOutletContext<UserContextADT>();
+	const { setType } = useOutletContext<UserContextADT>();
 
 	const submitTypeFirebase = async (type: UserType) => {
 		await setUserType((uid) => {

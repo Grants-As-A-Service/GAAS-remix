@@ -5,25 +5,28 @@ import { useFormValidation, useFormValidationPost } from "../../components/hooks
 import forumData from "../../../FormData.json";
 import { authorize } from "~/utils/firebaseClient";
 import { useOutletContext } from "@remix-run/react";
-import { Request, json } from "@remix-run/node";
-import { createAccount } from "db/controllers/accountController";
-import { bodyParserHandler, mongoHandler } from "~/utils/httpHandler";
+import { Request, json, ActionArgs } from "@remix-run/node";
+import { createAccount, getAccountId } from "db/controllers/accountController";
+import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/httpHandler";
 import { BuisnessBuilder } from "buisnessObjects/buisness";
 import { createBuisness } from "db/controllers/buisnessController";
+import { AccountBuilder } from "buisnessObjects/account";
 
-export async function action({ request }: { request: Request }) {
+export async function action({ request }: ActionArgs) {
 	let body = await request.json();
 
-	let buisness = bodyParserHandler(new BuisnessBuilder(body));
+	let buisness = bodyParserHandler(new BuisnessBuilder(body.buisness));
+	let account = bodyParserHandler(new AccountBuilder(body.user));
 
-	let [res, status] = await mongoHandler(createBuisness(buisness));
+	let accountID = await mongoHandlerThrows(getAccountId(account.email));
 
-	return new Response(JSON.stringify(res), {
-		status: status,
-	});
+	let res = await mongoHandlerThrows(createBuisness(buisness, accountID as string));
+
+	return new Response(JSON.stringify({ res }));
 }
 
 export default function Buisness() {
+	const { user } = useOutletContext<UserContextADT>();
 	const [initState] = useState<Business>({
 		name: "",
 		phone: "",
@@ -36,7 +39,6 @@ export default function Buisness() {
 		pte: 0,
 		annualRevenue: 0,
 		yearOfInception: new Date(),
-		projects: [],
 	});
 
 	const [update, submit, error, setError] = useFormValidationPost<BusinessADT>(
@@ -55,7 +57,7 @@ export default function Buisness() {
 		(state: Business) => {
 			return fetch("/register/buisness", {
 				method: "post",
-				body: JSON.stringify(state),
+				body: JSON.stringify({ buisness: state, user }),
 			});
 		}
 	);

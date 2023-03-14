@@ -27,6 +27,15 @@ export const responseHandler = (promise: Promise<Response>): Promise<Response> =
 	});
 };
 
+export const mongoHandlerThrows = async <T>(promise: Promise<T>) => {
+	try {
+		return await promise;
+	}
+	catch(error){
+		throw json((error as MongoServerError).code)
+	}
+};
+
 export const mongoHandler = <T>(promise: Promise<T>) => {
 	return new Promise<HTTPSTATUS<T>>((resolve) => {
 		promise
@@ -55,7 +64,7 @@ export const bodyParserHandler = <T>(builder: Builder<T>): T => {
 		return build;
 	} catch (error) {
 		if (error instanceof ZodError) {
-			console.error("body parse issue");
+			console.error("body parse issue", error);
 		} else {
 			console.log(error);
 		}

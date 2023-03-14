@@ -5,19 +5,13 @@ export default {
 		}
 	},
 	navigateWithProps: (route: string, props: any) => {
-		if (window !== undefined) {
-			let uri = encodeURIComponent(JSON.stringify(props));
-			window.location.href = route + "?props=" + uri;
-		}
+		let uri = encodeURIComponent(JSON.stringify(props));
+		window.location.href = route + "?props=" + uri;
 	},
 	getProps: () => {
-		if (window !== undefined) {
-			let url = new URL(window.location.href);
+		let url = new URL(window.location.href);
 
-			return JSON.parse(decodeURIComponent(url.searchParams.get("props") as string));
-		} else {
-			return {};
-		}
+		return JSON.parse(decodeURIComponent(url.searchParams.get("props") as string));
 	},
 	current: () => {
 		if (window !== undefined) {

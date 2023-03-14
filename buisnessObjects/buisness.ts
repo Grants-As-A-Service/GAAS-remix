@@ -13,7 +13,6 @@ export const BuisnessZod: z.ZodSchema<Business> = z.object({
 	pte: z.number(),
 	annualRevenue: z.number(),
 	yearOfInception: z.date(),
-	projects: z.array(z.string()),
 });
 
 export type BuisnessError = z.ZodError<Business>;

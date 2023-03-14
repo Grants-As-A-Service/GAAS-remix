@@ -1,7 +1,12 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-
-import { Outlet } from "@remix-run/react";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import router from "~/utils/router";
+import { LoaderArgs } from "@remix-run/node";
+import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/httpHandler";
+import { AccountBuilder } from "buisnessObjects/account";
+import { BuisnessBuilder } from "buisnessObjects/buisness";
+import { getAccount } from "db/controllers/accountController";
+import { createBuisness } from "db/controllers/buisnessController";
 
 export type UserContextADT = {
 	user: Account | undefined;
@@ -19,6 +24,7 @@ export default function Register() {
 	useEffect(() => {
 		if (!updated) {
 			let oldProps = router.getProps() as any;
+
 			if (oldProps) {
 				if ("user" in oldProps) {
 					setUser(oldProps.user);
@@ -32,7 +38,7 @@ export default function Register() {
 			let props = { type, user };
 			if (user && type) {
 				let route = type === "buisness" ? "/register/buisness" : "/register/government";
-
+				console.log(props);
 				if (route !== router.current()) {
 					router.navigateWithProps(route, props);
 				}

@@ -17,7 +17,7 @@ export async function action({ request }: { request: Request }) {
 
 	let [res, status] = await mongoHandler(createAccount(account));
 
-	console.log(status);
+	
 	return new Response(JSON.stringify(res), {
 		status: status,
 	});

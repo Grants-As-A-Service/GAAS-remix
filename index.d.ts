@@ -23,7 +23,6 @@ declare global {
 		pte: number;
 		annualRevenue: number;
 		yearOfInception: Date;
-		projects: string[];
 	};
 
 	type ChildProps = { children: React.ReactNode };
