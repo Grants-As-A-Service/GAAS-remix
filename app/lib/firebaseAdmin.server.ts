@@ -22,18 +22,9 @@ export const init = (name: string) => {
 	);
 };
 
-export const verifyToken = (app: admin.app.App, token: string) => {
-	return new Promise<{ email: string; userType: UserType }>((resolve, reject) => {
-		app.auth()
-			.verifyIdToken(token, true)
-			.then((user) => {
-				console.log(user);
-				resolve({
-					email: user.email as string,
-					userType: user.userType,
-				});
-			})
-			.catch(reject);
+export const setType = (app: admin.app.App, userId: string, userType: UserType) => {
+	return new Promise<void>((resolve, reject) => {
+		console.log("setting type");
+		app.auth().setCustomUserClaims(userId, { userType }).then(resolve).catch(reject);
 	});
 };
-

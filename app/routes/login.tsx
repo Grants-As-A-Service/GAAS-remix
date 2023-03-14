@@ -1,4 +1,4 @@
-import Login from "../../components/forms/LoginForm";
+import Login from "../components/forms/LoginForm";
 
 export default () => (
     <Login

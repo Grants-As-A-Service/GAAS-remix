@@ -6,7 +6,6 @@ import morgan from "morgan";
 import { createRequestHandler } from "@remix-run/express";
 import { authMiddleWare } from "./middleware";
 import "./db/mongodb";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 

@@ -1,4 +1,4 @@
 export default {
-    unauthorizedURlPaths: ["/", "/register", "/login"],
-    unAuthAPIRoutes: ["/api/auth"]
+	unauthorizedURlPaths: ["/", "/register/user", "/register/usertype", "/register/buisness", "/login"],
+	unAuthAPIRoutes: ["/api/auth"],
 };

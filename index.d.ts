@@ -1,84 +1,86 @@
 import type { Response, Request, NextFunction } from "express";
 
 declare global {
-    type HTTPSTATUS<T> = [T, number] 
+	type HTTPSTATUS<T> = [T, number];
 
-    type User = {
-        name: string;
-        email: string;
-        phone: string;
-    };
+	type UserType = "government" | "buisness";
 
-    type Business = {
-        name: string;
-        phone: string;
-        address: string;
-        city: string;
-        province: string;
-        postalCode: string;
-        industry: string;
-        fte: number;
-        pte: number;
-        annualRevenue: number;
-        yearOfInception: Date;
-        projects: string[];
-    };
+	type User = {
+		name: string;
+		email: string;
+		phone: string;
+	};
 
-    type AccountInfo = {
-        user: User;
-        buisness: Business;
-    };
+	type Business = {
+		name: string;
+		phone: string;
+		address: string;
+		city: string;
+		province: string;
+		postalCode: string;
+		industry: string;
+		fte: number;
+		pte: number;
+		annualRevenue: number;
+		yearOfInception: Date;
+		projects: string[];
+	};
 
-    type ChildProps = { children: React.ReactNode };
+	type AccountInfo = {
+		user: User;
+		buisness: Business;
+	};
 
-    type Tag = {
-        name: string;
-        strength: number;
-        description: string;
-        quantifier: number;
-    };
+	type ChildProps = { children: React.ReactNode };
 
-    type Project = {
-        name: string;
-        description: string;
-        startDate: Date;
-        endDate: Date;
-        capex: number;
-        annualOpex: number;
-        tags: Tag[];
-        status: string;
-    };
+	type Tag = {
+		name: string;
+		strength: number;
+		description: string;
+		quantifier: number;
+	};
 
-    interface ProjectADT extends Project {
-        [key: string]: string | number | Tag[] | Date;
-    }
+	type Project = {
+		name: string;
+		description: string;
+		startDate: Date;
+		endDate: Date;
+		capex: number;
+		annualOpex: number;
+		tags: Tag[];
+		status: string;
+	};
 
-    interface UserADT extends User {
-        [key: string]: string;
-    }
+	interface ProjectADT extends Project {
+		[key: string]: string | number | Tag[] | Date;
+	}
 
-    interface BusinessADT extends Business {
-        [key: string]: string | number | string[] | Date;
-    }
+	interface UserADT extends User {
+		[key: string]: string;
+	}
 
-    interface AccountInfoADT extends AccountInfo {
-        [key: string]: UserADT | BusinessADT | Date;
-    }
+	interface BusinessADT extends Business {
+		[key: string]: string | number | string[] | Date;
+	}
 
-    type Grant = {
-        title: string;
-        description: string;
-        creator: string;
-        tags: Array<string>;
-        createdAt: Date;
-    };
+	interface AccountInfoADT extends AccountInfo {
+		[key: string]: UserADT | BusinessADT | Date;
+	}
 
-    type TagName = {
-        name: string;
-    };
+	type Grant = {
+		title: string;
+		description: string;
+		creator: string;
+		tags: Array<string>;
+		createdAt: Date;
+	};
 
-    type ExpressResponse = Response;
-    type ExpressRequest = Request;
+	type TagName = {
+		name: string;
+	};
 
-    type ExpressHandler = (request: ExpressRequest, response: ExpressResponse, next: NextFunction) => void;
+	type ExpressResponse = Response;
+	type ExpressRequest = Request;
+
+	type ExpressHandler = (request: ExpressRequest, response: ExpressResponse, next: NextFunction) => void;
 }
