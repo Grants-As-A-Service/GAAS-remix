@@ -31,10 +31,11 @@ const Project = new mongoose.Schema({
 	},
 	tags: [
 		{
-			name: {
-				type: String,
-				required: true,
-			},
+			tagId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Tag",
+                required: true,
+            },
 			description: {
 				type: String,
 				required: true,

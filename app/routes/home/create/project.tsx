@@ -5,6 +5,8 @@ import { getTagNames } from "db/controllers/tagNamesController";
 import { useState } from "react";
 import { Link, ShouldRevalidateFunction, useLoaderData } from "@remix-run/react";
 import { bodyParserHandler, mongoHandler, multiHandler } from "~/utils/httpHandler";
+import { Form, FormInput, FormLabel } from "~/components/forms/Form";
+import { useFormValidation } from "~/components/hooks/formValidation";
 
 // export async function action({ request }: ActionArgs) {
 //     let email = request.headers.get("user");
@@ -29,44 +31,23 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function ProjectOnbaord() {
-	const [open, setOpen] = useState(false);
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-	const value = useLoaderData<typeof loader>();
+    useFormValidation<Project>({ 
+        name: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        capex: 0,
+        annualOpex: 0,
+        tags: [],
+        status: "";
+    })
 
-	const updateTags = function (newTag: string) {
-		setSelectedTags([...selectedTags, newTag]);
-	};
 
-	const [projectFeilds, setProjectFeilds] = useState<ProjectADT>(
-		() =>
-			({
-				tags: new Array<Tag>(),
-			} as ProjectADT)
-	);
-
-	const toggleProjectFeild = (data: any, key: keyof ProjectADT, remove?: string) => {
-		setProjectFeilds((oldProjectFeild) => {
-			if (remove) {
-				let newTags = oldProjectFeild.tags.filter((impactTag: Tag) => {
-					return impactTag.name !== data;
-				});
-				setSelectedTags((oldSelectedTags) => {
-					return oldSelectedTags.filter((tag) => tag !== data);
-				});
-
-				oldProjectFeild.impactTags = newTags;
-			} else {
-				if (key === "tags") {
-					oldProjectFeild[key].push(data);
-				} else {
-					oldProjectFeild[key] = data;
-				}
-			}
-			console.log(oldProjectFeild);
-			return oldProjectFeild;
-		});
-	};
+    const [projectFeilds, setProjectFeilds] = useState<ProjectADT>({
+        tags: new Array<Tag>(),
+    } as Project);
 
 	const [descriptionWC, setDescriptionWC] = useState(0);
 
@@ -77,20 +58,82 @@ export default function ProjectOnbaord() {
 	};
 
 	return (
-		<div className="from-primary to-secondary text-primary-content grid place-items-center items-start bg-gradient-to-br flex-1">
+		<div className="grid place-items-center items-start bg-gradient-to-br flex-1">
 			<div className="hero-content col-start-1 row-start-1 w-full max-w-7xl flex-col justify-between gap-10 pb-40 lg:flex-row lg:items-end lg:gap-0 xl:gap-20">
 				<div className="lg:pl-10 lg:pb-24">
 					<div className="mb-2 py-4 text-center lg:py-10 lg:text-left">
 						<h1 className="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-5xl">Create a project</h1>
-						<h2 className="font-title text-lg font-extrabold sm:text-xl lg:text-2xl">Getting Started</h2>
 					</div>
 					<div className="flex flex-row gap-10">
-						<Link to="/login" className="btn btn-lg btn-secondary">
-							Login
-						</Link>
-						<Link to="/register" className="btn btn-lg">
-							Register
-						</Link>
+						<>
+							<Form>
+								<FormLabel>Project Name</FormLabel>
+								<FormInput
+									type="text"
+									name="name"
+									label="New Project"
+									onTyping={(e) => toggleProjectFeild(e.target.value, "name")}
+								/>
+							</Form>
+							<FormGroup>
+								<Label for="description">Project Description</Label>
+								<textarea
+									className="form-control"
+									id="description"
+									placeholder="This project is..."
+									value={projectFeilds.description}
+									onChange={(e) => {
+										toggleProjectFeild(e.target.value.length > 3000 ? projectFeilds.description : e.target.value, "description");
+										setDescriptionWC(e.target.value.length);
+									}}
+								></textarea>
+								<p>{descriptionWC}/3000</p>
+							</FormGroup>
+							<FormGroup>
+								<Label for="capex">Capital Investment Required</Label>
+								<div className="input-group">
+									<div className="input-group-prepend">
+										<span className="input-group-text">$</span>
+									</div>
+									<input
+										type="text"
+										id="capex"
+										className="form-control"
+										placeholder="Capital Investment Required"
+										value={projectFeilds.capex}
+										onChange={(e) => toggleProjectFeild(e.target.value, "capex")}
+									/>
+								</div>
+							</FormGroup>
+							<FormGroup>
+								<Label for="annualOpex">Annual Operating Expenses</Label>
+								<div className="input-group">
+									<div className="input-group-prepend">
+										<span className="input-group-text">$</span>
+									</div>
+									<input
+										type="text"
+										id="annualOpex"
+										className="form-control"
+										placeholder="Annual Operating Expenses"
+										value={projectFeilds.annualOpex}
+										onChange={(e) => toggleProjectFeild(e.target.value, "annualOpex")}
+									/>
+								</div>
+							</FormGroup>
+							<FormGroup>
+								<Row>
+									<Col xs={12} md={6}>
+										<Label for="startDate">Start Date</Label>
+										<Input type="date" id="startDate" onChange={(e) => toggleProjectFeild(e.target.value, "startDate")} />
+									</Col>
+									<Col xs={12} md={6}>
+										<Label for="endDate">Start Date</Label>
+										<Input type="date" id="endDate" onChange={(e) => toggleProjectFeild(e.target.value, "endDate")} />
+									</Col>
+								</Row>
+							</FormGroup>
+						</Form>
 					</div>
 				</div>
 			</div>
@@ -100,76 +143,7 @@ export default function ProjectOnbaord() {
 		//         <Row className="justify-content-center">
 		//             <div className="d-flex w-75 flex-column mt-5">
 		//                 <h3>Add New Project</h3>
-		//                 <Form>
-		//                     <FormGroup>
-		//                         <Label for="name">Project Name</Label>
-		//                         <Input
-		//                             type="text"
-		//                             name="name"
-		//                             id="name"
-		//                             placeholder="New Project"
-		//                             onChange={(e) => toggleProjectFeild(e.target.value, "name")}
-		//                         />
-		//                     </FormGroup>
-		//                     <FormGroup>
-		//                         <Label for="description">Project Description</Label>
-		//                         <textarea
-		//                             className="form-control"
-		//                             id="description"
-		//                             placeholder="This project is..."
-		//                             value={projectFeilds.description}
-		//                             onChange={(e) => {
-		//                                 toggleProjectFeild(e.target.value.length > 3000 ? projectFeilds.description : e.target.value, "description");
-		//                                 setDescriptionWC(e.target.value.length);
-		//                             }}
-		//                         ></textarea>
-		//                         <p>{descriptionWC}/3000</p>
-		//                     </FormGroup>
-		//                     <FormGroup>
-		//                         <Label for="capex">Capital Investment Required</Label>
-		//                         <div className="input-group">
-		//                             <div className="input-group-prepend">
-		//                                 <span className="input-group-text">$</span>
-		//                             </div>
-		//                             <input
-		//                                 type="text"
-		//                                 id="capex"
-		//                                 className="form-control"
-		//                                 placeholder="Capital Investment Required"
-		//                                 value={projectFeilds.capex}
-		//                                 onChange={(e) => toggleProjectFeild(e.target.value, "capex")}
-		//                             />
-		//                         </div>
-		//                     </FormGroup>
-		//                     <FormGroup>
-		//                         <Label for="annualOpex">Annual Operating Expenses</Label>
-		//                         <div className="input-group">
-		//                             <div className="input-group-prepend">
-		//                                 <span className="input-group-text">$</span>
-		//                             </div>
-		//                             <input
-		//                                 type="text"
-		//                                 id="annualOpex"
-		//                                 className="form-control"
-		//                                 placeholder="Annual Operating Expenses"
-		//                                 value={projectFeilds.annualOpex}
-		//                                 onChange={(e) => toggleProjectFeild(e.target.value, "annualOpex")}
-		//                             />
-		//                         </div>
-		//                     </FormGroup>
-		//                     <FormGroup>
-		//                         <Row>
-		//                             <Col xs={12} md={6}>
-		//                                 <Label for="startDate">Start Date</Label>
-		//                                 <Input type="date" id="startDate" onChange={(e) => toggleProjectFeild(e.target.value, "startDate")} />
-		//                             </Col>
-		//                             <Col xs={12} md={6}>
-		//                                 <Label for="endDate">Start Date</Label>
-		//                                 <Input type="date" id="endDate" onChange={(e) => toggleProjectFeild(e.target.value, "endDate")} />
-		//                             </Col>
-		//                         </Row>
-		//                     </FormGroup>
-		//                 </Form>
+		//
 		//                 <hr></hr>
 		//                 <h3 className="mt-2">Impact Tags</h3>
 		//                 <p>Add impact tags to demonstrate how your project aligns with social objectives.</p>

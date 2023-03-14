@@ -1,11 +1,6 @@
 import { model, Schema } from "mongoose";
 
 const Tag = new Schema({
-    tagNameId: {
-        type: Schema.Types.ObjectId,
-        ref: "tagname",
-        required: true,
-    },
     tagName: {
         type: String,
         required: true,
@@ -22,4 +17,4 @@ const Tag = new Schema({
     },
 });
 
-export const TagModel = model("tag", Tag);
+export const TagModel = model("Tag", Tag);
