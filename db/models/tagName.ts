@@ -1,10 +1,10 @@
-import { model, Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const TagNameSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
+const TagNameSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
+	},
 });
 
-export const TagNameModel = model("tagname", TagNameSchema);
+export const TagNameModel = mongoose.models.TagName || mongoose.model("TagName", TagNameSchema);

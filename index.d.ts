@@ -5,7 +5,7 @@ declare global {
 
 	type UserType = "government" | "buisness";
 
-	type User = {
+	type Account = {
 		name: string;
 		email: string;
 		phone: string;
@@ -26,12 +26,15 @@ declare global {
 		projects: string[];
 	};
 
-	type AccountInfo = {
-		user: User;
-		buisness: Business;
-	};
-
 	type ChildProps = { children: React.ReactNode };
+
+	type Government = {
+		name: string;
+		level: string;
+		govDetails: string;
+		annualFundingBudget: number;
+		fundedProjects: number;
+	};
 
 	type Tag = {
 		name: string;
@@ -55,16 +58,12 @@ declare global {
 		[key: string]: string | number | Tag[] | Date;
 	}
 
-	interface UserADT extends User {
+	interface UserADT extends Account {
 		[key: string]: string;
 	}
 
 	interface BusinessADT extends Business {
 		[key: string]: string | number | string[] | Date;
-	}
-
-	interface AccountInfoADT extends AccountInfo {
-		[key: string]: UserADT | BusinessADT | Date;
 	}
 
 	type Grant = {
@@ -78,9 +77,4 @@ declare global {
 	type TagName = {
 		name: string;
 	};
-
-	type ExpressResponse = Response;
-	type ExpressRequest = Request;
-
-	type ExpressHandler = (request: ExpressRequest, response: ExpressResponse, next: NextFunction) => void;
 }

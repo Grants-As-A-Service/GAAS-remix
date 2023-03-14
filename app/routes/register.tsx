@@ -4,15 +4,15 @@ import { Outlet } from "@remix-run/react";
 import router from "~/utils/router";
 
 export type UserContextADT = {
-	user: User | undefined;
-	setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+	user: Account | undefined;
+	setUser: React.Dispatch<React.SetStateAction<Account | undefined>>;
 	type: UserType | undefined;
 	setType: React.Dispatch<React.SetStateAction<UserType | undefined>>;
 };
 
 //this got completelty fucking ridiculous
 export default function Register() {
-	const [user, setUser] = useState<User | undefined>();
+	const [user, setUser] = useState<Account | undefined>();
 	const [type, setType] = useState<UserType | undefined>();
 	const [updated, setUpdate] = useState(false);
 

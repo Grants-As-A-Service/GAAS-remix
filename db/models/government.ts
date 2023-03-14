@@ -9,7 +9,6 @@ export const GovernmentSchema = new mongoose.Schema({
 	name: String,
 	level: String,
 	govDetails: String,
-	email: String,
 	annualFundingBudget: Number,
 	fundedProjects: Number,
 });

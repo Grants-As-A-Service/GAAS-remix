@@ -8,25 +8,22 @@ import { useOutletContext } from "@remix-run/react";
 import { Request, json } from "@remix-run/node";
 import { createAccount } from "db/controllers/accountController";
 import { bodyParserHandler, mongoHandler } from "~/utils/httpHandler";
-import { AccountBuilder, AccountError } from "buisnesObjects/account";
+import { BuisnessBuilder } from "buisnessObjects/buisness";
+import { createBuisness } from "db/controllers/buisnessController";
 
-//register post
 export async function action({ request }: { request: Request }) {
 	let body = await request.json();
-	console.log(body);
-	let account = bodyParserHandler(new AccountBuilder(body));
 
-	let [res, status] = await mongoHandler(createAccount(account));
+	let buisness = bodyParserHandler(new BuisnessBuilder(body));
 
-	console.log(status);
+	let [res, status] = await mongoHandler(createBuisness(buisness));
+
 	return new Response(JSON.stringify(res), {
 		status: status,
 	});
 }
 
 export default function Buisness() {
-	const { user, type } = useOutletContext<UserContextADT>();
-
 	const [initState] = useState<Business>({
 		name: "",
 		phone: "",
@@ -48,25 +45,17 @@ export default function Buisness() {
 			if (state.phone.length !== 10) {
 				return "bad phone number";
 			}
-
 			for (const [key, value] of Object.entries(state)) {
 				//@ts-ignore
 				if (initState[key] === value) {
 					return "enter a value for " + key;
 				}
 			}
-
-			return "";
 		},
-		(state: BusinessADT) => {
-			let account: AccountInfo = {
-				buisness: state,
-				user: user as User,
-			};
-
+		(state: Business) => {
 			return fetch("/register/buisness", {
 				method: "post",
-				body: JSON.stringify(account),
+				body: JSON.stringify(state),
 			});
 		}
 	);

@@ -5,6 +5,23 @@ import router from "~/utils/router";
 import { UserContextADT } from "../register";
 import { Form, FormInput, FormButton } from "../../components/forms/Form";
 import { useFormValidation, useFormValidationPost, validEmail, validPassword } from "../../components/hooks/formValidation";
+import { bodyParserHandler, mongoHandler, responseHandler } from "~/utils/httpHandler";
+import { AccountBuilder } from "buisnessObjects/account";
+import { createAccount } from "db/controllers/accountController";
+
+//register post
+export async function action({ request }: { request: Request }) {
+	let body = await request.json();
+
+	let account = bodyParserHandler(new AccountBuilder(body));
+
+	let [res, status] = await mongoHandler(createAccount(account));
+
+	console.log(status);
+	return new Response(JSON.stringify(res), {
+		status: status,
+	});
+}
 
 type UserLogin = { email: string; password: string; confirmPassword: string; number: string; name: string };
 
@@ -32,11 +49,20 @@ export default function User() {
 			if (state.number.length !== 10) {
 				return "bad number";
 			}
-			return "";
 		},
 		async (state: UserLogin) => {
 			try {
 				await signup(state.email, state.password);
+				await responseHandler(
+					fetch("/register/user", {
+						method: "post",
+						body: JSON.stringify({
+							name: state.name,
+							email: state.email,
+							phone: state.number,
+						} as Account),
+					})
+				);
 				setUser({
 					email: state.email,
 					phone: state.number,

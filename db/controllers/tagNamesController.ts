@@ -1,4 +1,4 @@
-import { TagNameZod } from "buisnesObjects/tagName";
+import { TagNameZod } from "buisnessObjects/tagName";
 import { TagNameModel } from "../models/tagName";
 
 const getTagNames = async () => {
