@@ -3,7 +3,7 @@ import { HydratedDocument } from "mongoose";
 import { AccountModel } from "../models/account";
 
 const getAccount = (email: string) => {
-    return AccountModel.findOne({ "user.email": email });
+    return AccountModel.findOne({ "email": email });
 };
 
 const createAccount = (account: AccountInfo) => {
