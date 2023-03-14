@@ -1,3 +1,4 @@
+import { responseHandler } from "~/utils/httpHandler";
 
 export default () => {
     // Get all grant-business matchings through firebase query
