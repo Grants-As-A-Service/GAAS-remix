@@ -30,9 +30,8 @@ export const responseHandler = (promise: Promise<Response>): Promise<Response> =
 export const mongoHandlerThrows = async <T>(promise: Promise<T>) => {
 	try {
 		return await promise;
-	}
-	catch(error){
-		throw json((error as MongoServerError).code)
+	} catch (error) {
+		throw json((error as MongoServerError).code);
 	}
 };
 
@@ -48,6 +47,13 @@ export const mongoHandler = <T>(promise: Promise<T>) => {
 				resolve([null as T, code]);
 			});
 	});
+};
+
+export const multiHandlerThrows = <T>(promiseArray: Array<Promise<any>>): Promise<T> => {
+	return mongoHandlerThrows<T>(
+		//@ts-ignore
+		Promise.all(promiseArray)
+	);
 };
 
 export const multiHandler = <T>(promiseArray: Array<Promise<any>>): Promise<HTTPSTATUS<T>> => {

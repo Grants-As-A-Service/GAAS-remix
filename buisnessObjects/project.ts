@@ -21,7 +21,6 @@ export class ProjectBuilder extends Builder<Project> {
             ...body,
             startDate: new Date(body.startDate),
             endDate: new Date(body.endDate),
-            tags: [],
         };
 
         ProjectZod.parse(project);

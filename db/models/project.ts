@@ -29,23 +29,6 @@ const Project = new mongoose.Schema({
 		type: Date,
 		required: true,
 	},
-	tags: [
-		{
-			tagId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Tag",
-                required: true,
-            },
-			description: {
-				type: String,
-				required: true,
-			},
-			strength: {
-				type: String,
-				required: true,
-			},
-		},
-	],
 });
 
 export const ProjectModel = mongoose.models.Account || mongoose.model("project", Project);

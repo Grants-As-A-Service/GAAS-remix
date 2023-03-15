@@ -1,185 +1,166 @@
-import { ActionArgs, LoaderArgs } from "@remix-run/node";
+import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
 import { ProjectBuilder } from "buisnessObjects/project";
 import { createProject, getProjects } from "db/controllers/projectController";
 import { getTagNames } from "db/controllers/tagNamesController";
-import { useState } from "react";
-import { Link, ShouldRevalidateFunction, useLoaderData } from "@remix-run/react";
-import { bodyParserHandler, mongoHandler, multiHandler } from "~/utils/httpHandler";
-import { Form, FormInput, FormLabel } from "~/components/forms/Form";
+import { ChangeEvent, MouseEvent, useState } from "react";
+import { Form, FormButton, FormInput, FormLabel } from "~/components/forms/Form";
 import { useFormValidation } from "~/components/hooks/formValidation";
-
-// export async function action({ request }: ActionArgs) {
-//     let email = request.headers.get("user");
-
-//     let body = bodyParserHandler(new ProjectBuilder(await request.json()));
-
-//     let [res, status] = await mongoHandler(createProject(body));
-
-//     return new Response(null, {
-//         status: 200,
-//     });
-// }
+import { mongoHandlerThrows, multiHandlerThrows } from "~/utils/handler";
+import { useLoaderData } from "@remix-run/react";
 
 export async function loader({ request }: LoaderArgs) {
 	let user = request.headers.get("user");
 
-	getTagNames();
+	let [tags] = await multiHandlerThrows<[Array<string>]>([getTagNames()]);
 
-	return new Response(null, {
-		status: 200,
-	});
+	return json({ tags });
 }
 
 export default function ProjectOnbaord() {
-	const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-    useFormValidation<Project>({ 
-        name: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        capex: 0,
-        annualOpex: 0,
-        tags: [],
-        status: "";
-    })
-
-
-    const [projectFeilds, setProjectFeilds] = useState<ProjectADT>({
-        tags: new Array<Tag>(),
-    } as Project);
-
+	const { tags } = useLoaderData<typeof loader>();
+	const [selectedTags, setSelectedTags] = useState<Map<string, Tag>>(new Map());
 	const [descriptionWC, setDescriptionWC] = useState(0);
-
-	const submit = async () => {
-		// onBoardProject(projectFeilds).then(() => {
-		//     swapScreen("Home");
-		// });
-	};
+	const [initState] = useState({
+		name: "",
+		description: "",
+		startDate: new Date(),
+		endDate: new Date(),
+		capex: 0,
+		annualOpex: 0,
+		status: "pending",
+	});
+	const [update, error, setError, submit] = useFormValidation<Project>(
+		initState,
+		(state: Project) => {
+			for (const [key, value] of Object.entries(state)) {
+				//@ts-ignore
+				if (key !== "status" && initState[key] === value) {
+					return "enter a value for " + key;
+				}
+			}
+		},
+		(state: Project) => {
+			console.log(state);
+			console.log(selectedTags);
+		}
+	);
 
 	return (
-		<div className="grid place-items-center items-start bg-gradient-to-br flex-1">
-			<div className="hero-content col-start-1 row-start-1 w-full max-w-7xl flex-col justify-between gap-10 pb-40 lg:flex-row lg:items-end lg:gap-0 xl:gap-20">
-				<div className="lg:pl-10 lg:pb-24">
-					<div className="mb-2 py-4 text-center lg:py-10 lg:text-left">
-						<h1 className="font-title mb-2 text-4xl font-extrabold sm:text-5xl lg:text-5xl">Create a project</h1>
-					</div>
-					<div className="flex flex-row gap-10">
-						<>
-							<Form>
-								<FormLabel>Project Name</FormLabel>
-								<FormInput
-									type="text"
-									name="name"
-									label="New Project"
-									onTyping={(e) => toggleProjectFeild(e.target.value, "name")}
-								/>
-							</Form>
-							<FormGroup>
-								<Label for="description">Project Description</Label>
-								<textarea
-									className="form-control"
-									id="description"
-									placeholder="This project is..."
-									value={projectFeilds.description}
-									onChange={(e) => {
-										toggleProjectFeild(e.target.value.length > 3000 ? projectFeilds.description : e.target.value, "description");
-										setDescriptionWC(e.target.value.length);
-									}}
-								></textarea>
-								<p>{descriptionWC}/3000</p>
-							</FormGroup>
-							<FormGroup>
-								<Label for="capex">Capital Investment Required</Label>
-								<div className="input-group">
-									<div className="input-group-prepend">
-										<span className="input-group-text">$</span>
-									</div>
-									<input
-										type="text"
-										id="capex"
-										className="form-control"
-										placeholder="Capital Investment Required"
-										value={projectFeilds.capex}
-										onChange={(e) => toggleProjectFeild(e.target.value, "capex")}
-									/>
+		<div className="w-full h-screen">
+			<div className="px-5 w-full h-full">
+				<div className="mb-2 py-4 text-center">
+					<h1 className="font-title mb-2 text-4xl font-extrabold">Create a project</h1>
+				</div>
+				<div className="flex flex-row gap-5 w-full">
+					<Form customWidth="max-w-md">
+						<h3 className="font-title mb-2 text-2xl font-extrabold">Project Details</h3>
+						<FormInput type="text" label="Project Name" onTyping={(e) => update(e.target.value, "name")} />
+						<FormLabel>Project Description</FormLabel>
+						<textarea
+							className="textarea textarea-primary"
+							placeholder="This project is..."
+							onChange={(e) => {
+								if (e.target.value.length < 3000) {
+									update(e.target.value, "description");
+									setDescriptionWC(e.target.value.length);
+								}
+							}}
+						></textarea>
+						<p>{descriptionWC}/3000</p>
+
+						<FormInput onTyping={(e) => update(e.target.value, "capex")} type="number" label="capex" />
+
+						<FormInput onTyping={(e) => update(e.target.value, "annualOpex")} type="number" label="Annual Opex" />
+						<div className="flex flex-row gap-3">
+							<FormInput onTyping={(e) => update(e.target.value, "startDate")} type="date" label="Start Date" />
+							<FormInput onTyping={(e) => update(e.target.value, "endDate")} type="date" label="End Date" />
+						</div>
+						<FormButton onClick={() => submit()}>Confirm</FormButton>
+					</Form>
+
+					<div className="flex flex-col w-full">
+						<div className="d-flex w-75 flex-column mt-5">
+							<h3 className="font-title mb-2 text-3xl font-extrabold">Impact Tags</h3>
+							<p>Add impact tags to demonstrate how your project aligns with social objectives.</p>
+							<div className="py-4">
+								<div className="dropdown dropdown-hover">
+									<label tabIndex={0} className="btn m-1">
+										Add Impact Tag
+									</label>
+									<ul
+										tabIndex={0}
+										className="h-52 w-52 overflow-y-scroll dropdown-content menu p-2 shadow bg-base-300 rounded-box flex-nowrap"
+									>
+										{tags.map((tag) => (
+											<li
+												onClick={() => {
+													setSelectedTags((oldTags) => {
+														let newTags = structuredClone(oldTags);
+														newTags.set(tag, {
+															name: tag,
+															description: "",
+															quantifier: 0,
+														});
+														return newTags;
+													});
+												}}
+											>
+												<a>{tag}</a>
+											</li>
+										))}
+									</ul>
 								</div>
-							</FormGroup>
-							<FormGroup>
-								<Label for="annualOpex">Annual Operating Expenses</Label>
-								<div className="input-group">
-									<div className="input-group-prepend">
-										<span className="input-group-text">$</span>
-									</div>
-									<input
-										type="text"
-										id="annualOpex"
-										className="form-control"
-										placeholder="Annual Operating Expenses"
-										value={projectFeilds.annualOpex}
-										onChange={(e) => toggleProjectFeild(e.target.value, "annualOpex")}
-									/>
-								</div>
-							</FormGroup>
-							<FormGroup>
-								<Row>
-									<Col xs={12} md={6}>
-										<Label for="startDate">Start Date</Label>
-										<Input type="date" id="startDate" onChange={(e) => toggleProjectFeild(e.target.value, "startDate")} />
-									</Col>
-									<Col xs={12} md={6}>
-										<Label for="endDate">Start Date</Label>
-										<Input type="date" id="endDate" onChange={(e) => toggleProjectFeild(e.target.value, "endDate")} />
-									</Col>
-								</Row>
-							</FormGroup>
-						</Form>
+							</div>
+						</div>
+						<div className="flex flex-row flex-wrap w-full gap-5">
+							{Array.from(selectedTags).map(([tagName]) => {
+								const updateTag = (key: keyof Tag, value: any) => {
+									console.log(value);
+									setSelectedTags((oldTags) => {
+										let newTags = structuredClone(oldTags);
+										let tag = newTags.get(tagName);
+										//@ts-ignore
+										tag[key] = value;
+										return newTags;
+									});
+								};
+								return (
+									<Form customWidth="max-w-sm">
+										<h3 className="font-title mb-2 text-lg">Tag: {tagName}</h3>
+										<FormLabel>Strength</FormLabel>
+										<input
+											type="range"
+											min="0"
+											max="10"
+											onChange={(e) => updateTag("quantifier", e.target.value)}
+											className="range range-primary"
+										/>
+										<div className="pb-5" />
+										<textarea
+											className="textarea textarea-primary"
+											placeholder="This project is..."
+											onChange={(e) => updateTag("description", e.target.value)}
+										/>
+										<div className="pb-5" />
+										<button
+											className="btn btn-active btn-accent"
+											onClick={() => {
+												setSelectedTags((oldTags) => {
+													let newTags = structuredClone(oldTags);
+													newTags.delete(tagName);
+													return newTags;
+												});
+											}}
+										>
+											Remove
+										</button>
+									</Form>
+								);
+							})}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		//     <Container>
-		//         <Row className="justify-content-center">
-		//             <div className="d-flex w-75 flex-column mt-5">
-		//                 <h3>Add New Project</h3>
-		//
-		//                 <hr></hr>
-		//                 <h3 className="mt-2">Impact Tags</h3>
-		//                 <p>Add impact tags to demonstrate how your project aligns with social objectives.</p>
-		//                 <Dropdown
-		//                     isOpen={open}
-		//                     toggle={() => {
-		//                         setOpen(!open);
-		//                     }}
-		//                 >
-		//                     <DropdownToggle color="success" outline caret>
-		//                         Add Impact Tag
-		//                     </DropdownToggle>
-		//                     <DropdownMenu left>
-		//                         {tags.map((tag) => (
-		//                             <DropdownItem
-		//                                 onClick={() => {
-		//                                     updateTags(tag);
-		//                                 }}
-		//                             >
-		//                                 {tag}
-		//                             </DropdownItem>
-		//                         ))}
-		//                     </DropdownMenu>
-		//                 </Dropdown>
-		//                 <Row className="p-5">
-		//                     {selectedTags.map((tag) => (
-		//                         <Col xs={12} lg={4} md={6}>
-		//                             <ProjectTag label={tag} update={toggleProjectFeild} />
-		//                         </Col>
-		//                     ))}
-		//                 </Row>
-		//                 <Button style={{ width: "150px" }} color="success" onClick={() => submit()}>
-		//                     Save Project
-		//                 </Button>
-		//             </div>
-		//         </Row>
-		//     </Container>
 	);
 }

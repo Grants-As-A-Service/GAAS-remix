@@ -2,8 +2,8 @@ import { TagNameZod } from "buisnessObjects/tagName";
 import { TagNameModel } from "../models/tagName";
 
 const getTagNames = async () => {
-	return (await TagNameModel.find()).forEach((doc) => {
-		console.log(doc);
+	return (await TagNameModel.find()).map((doc) => {
+		return doc.name;
 	});
 };
 

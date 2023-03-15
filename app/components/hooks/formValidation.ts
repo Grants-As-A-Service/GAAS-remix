@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useReducer, useState } from "react";
-import { responseHandler } from "~/utils/httpHandler";
+import { responseHandler } from "~/utils/handler";
 
 export const validEmail = (email: string) => {
 	return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
@@ -50,7 +50,7 @@ export const useFormValidationPost = <State>(
 	return [update, submit, error, setError] as [(data: string, key: keyof State) => void, () => Promise<Response>, string, Dispatch<SetStateAction<string>>];
 };
 
-export const useFormValidation = <State>(initState: State, condition: (state: State) => string | undefined, done: (state: State) => void) => {
+export const useFormValidation = <State>(initState: State, condition: (state: State) => string | void, done: (state: State) => void) => {
 	const [error, setError] = useState("");
 	const [state, setState] = useState(initState);
 

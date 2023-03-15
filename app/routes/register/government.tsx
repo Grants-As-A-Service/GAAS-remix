@@ -6,7 +6,7 @@ import forumData from "../../../FormData.json";
 import { authorize } from "~/utils/firebaseClient";
 import { useOutletContext } from "@remix-run/react";
 import { Request, json, ActionArgs } from "@remix-run/node";
-import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/httpHandler";
+import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/handler";
 import { GovernmentBuilder } from "buisnessObjects/government";
 import { createGovernment } from "db/controllers/governmentController";
 import { AccountBuilder } from "buisnessObjects/account";

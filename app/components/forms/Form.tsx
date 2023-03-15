@@ -9,8 +9,8 @@ export const FormRemix = ({ children }: ChildProps) => (
 	</Forum>
 );
 
-export const Form = ({ children }: ChildProps) => (
-	<div className="card flex-shrink-0 w-full h-fit max-w-sm shadow-2xl bg-base-300">
+export const Form = ({ children, customWidth }: ChildProps & { customWidth?: string }) => (
+	<div className={"card flex-shrink-0 w-full h-fit shadow-2xl bg-base-300 " + (customWidth ? customWidth : "max-w-sm")}>
 		<div className="card-body">{children}</div>
 	</div>
 );
@@ -64,7 +64,7 @@ export const FormInput = ({ onTyping, type, placeholder, label, regex, name }: F
 			<label className="label">
 				<span className="label-text">{label}</span>
 			</label>
-			<input name={name} type={type} onChange={(e) => onTyping(e)} placeholder={placeholder ? placeholder : label} className="input input-bordered" />
+			<input name={name} type={type} onChange={(e) => onTyping(e)} placeholder={placeholder ? placeholder : label} className="input input-primary" />
 		</div>
 	);
 };

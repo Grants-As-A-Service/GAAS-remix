@@ -6,49 +6,49 @@ import { SideBar } from "./components/navs/SideBar";
 import { signout } from "./utils/firebaseClient";
 import stylesheet from "./tailwind.css";
 import { auth } from "../cookies";
-import { pathNameSlicer } from "./utils/httpHandler";
+import { pathNameSlicer } from "./utils/handler";
 import serverConfig from "../server.config";
 import { getAuthState } from "./utils/browserCookieRead";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
 
 export const meta: MetaFunction = () => ({
-    charset: "utf-8",
-    title: "New Remix App",
-    viewport: "width=device-width,initial-scale=1",
+	charset: "utf-8",
+	title: "New Remix App",
+	viewport: "width=device-width,initial-scale=1",
 });
 
 export default function App() {
-    return (
-        <html lang="en" data-theme="night">
-            <head>
-                <Meta />
-                <Links />
-            </head>
-            <body style={{ margin: 0 }}>
-                <SideBar>
-                    <NavBar>
-                        <NavSandwhich />
-                        <NavItem name="GAAS" />
-                        <Route />
-                        {getAuthState() ? (
-                            <NavButton
-                                name="sign out"
-                                onClick={() => {
-                                    console.log("signining out");
-                                    signout();
-                                }}
-                            />
-                        ) : (
-                            <NavDropDown title="Account" menu={["login", "register"]} />
-                        )}
-                    </NavBar>
-                    <Outlet />
-                </SideBar>
-                <ScrollRestoration />
-                <Scripts />
-                <LiveReload />
-            </body>
-        </html>
-    );
+	return (
+		<html lang="en" data-theme="night">
+			<head>
+				<Meta />
+				<Links />
+			</head>
+			<body style={{ margin: 0 }}>
+				<SideBar>
+					<NavBar>
+						<NavSandwhich />
+						<NavItem name="GAAS" />
+						<Route />
+						{getAuthState() ? (
+							<NavButton
+								name="sign out"
+								onClick={() => {
+									console.log("signining out");
+									signout();
+								}}
+							/>
+						) : (
+							<NavDropDown title="Account" menu={["login", "register"]} />
+						)}
+					</NavBar>
+					<Outlet />
+				</SideBar>
+				<ScrollRestoration />
+				<Scripts />
+				<LiveReload />
+			</body>
+		</html>
+	);
 }

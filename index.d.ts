@@ -37,7 +37,6 @@ declare global {
 
 	type Tag = {
 		name: string;
-		strength: number;
 		description: string;
 		quantifier: number;
 	};
@@ -49,7 +48,6 @@ declare global {
 		endDate: Date;
 		capex: number;
 		annualOpex: number;
-		tags: Tag[];
 		status: string;
 	};
 

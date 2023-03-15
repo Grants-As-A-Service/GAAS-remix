@@ -7,7 +7,7 @@ import { authorize } from "~/utils/firebaseClient";
 import { useOutletContext } from "@remix-run/react";
 import { Request, json, ActionArgs } from "@remix-run/node";
 import { createAccount, getAccountId } from "db/controllers/accountController";
-import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/httpHandler";
+import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/handler";
 import { BuisnessBuilder } from "buisnessObjects/buisness";
 import { createBuisness } from "db/controllers/buisnessController";
 import { AccountBuilder } from "buisnessObjects/account";
