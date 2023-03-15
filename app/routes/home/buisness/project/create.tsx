@@ -33,7 +33,6 @@ export async function action({ request }: ActionArgs) {
 }
 
 export async function loader({ request }: LoaderArgs) {
-	let user = request.headers.get("user");
 
 	let [tags] = await multiHandlerThrows<[Array<any>]>([getTagNames()]);
 
@@ -64,7 +63,7 @@ export default function ProjectOnbaord() {
 			}
 		},
 		(state: Project) => {
-			return fetch("/home/create/project", {
+			return fetch("/home/buisness/create/project", {
 				method: "post",
 				body: JSON.stringify({
 					project: state,

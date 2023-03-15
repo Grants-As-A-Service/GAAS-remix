@@ -12,8 +12,6 @@ export async function action({ request }: { request: Request }) {
 
 	let accountID = await mongoHandlerThrows(getAccountId(email));
 
-	
-
 	await setClaims(app, uid, userType, accountID);
 
 	await app.delete();

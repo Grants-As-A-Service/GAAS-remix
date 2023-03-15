@@ -5,6 +5,10 @@ const getTagNames = () => {
 	return TagNameModel.find();
 };
 
+export const getSelectTagNames = (tagNameId: string) => {
+	return TagNameModel.find({ _id: tagNameId });
+};
+
 const createTagName = (tagname: string) => {
 	return new Promise((resolve, reject) => {
 		try {

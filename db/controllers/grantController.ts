@@ -3,8 +3,8 @@ import { GrantModel } from "../models/grant";
 
 const getGrant = async (request: any) => {};
 
-const getGrants = () => {
-	return GrantModel.find();
+export const getCreatedGrants = (accountId: string) => {
+	return GrantModel.find({ creator: accountId });
 };
 
 const createGrant = async (grant: Grant) => {

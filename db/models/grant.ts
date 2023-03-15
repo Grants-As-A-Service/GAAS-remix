@@ -1,9 +1,13 @@
-import { model, Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const GrantSchema = new Schema({
+const GrantSchema = new mongoose.Schema({
 	title: String,
 	description: String,
-	creator: String,
+	creator: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Account",
+		required: true,
+	},
 	tags: [String],
 	createdAt: {
 		type: Date,
@@ -11,4 +15,4 @@ const GrantSchema = new Schema({
 	},
 });
 
-export const GrantModel = model("GrantPost", GrantSchema);
+export const GrantModel = mongoose.models.Grant || mongoose.model("Grant", GrantSchema);

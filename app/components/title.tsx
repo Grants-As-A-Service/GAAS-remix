@@ -13,3 +13,16 @@ export const Title = ({ children, title, foot }: { children: React.ReactNode; ti
 		</div>
 	);
 };
+
+export const TitleCenter = ({ children, title }: { children: React.ReactNode; title: string }) => {
+	return (
+		<div className="w-full h-screen">
+			<div className="px-5 w-full h-full">
+				<div className="mb-2 py-4 text-center">
+					<h1 className="font-title mb-2 text-4xl font-extrabold">{title}</h1>
+				</div>
+				<div className="flex flex-row gap-5 w-full">{children}</div>
+			</div>
+		</div>
+	);
+};

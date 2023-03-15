@@ -43,7 +43,7 @@ export const useNavigator = (object: any) => {
 
 export const useRouter = <T>() => {
 	const [updated, setUpdate] = useState(false);
-	const [props, setProps] = useState({} as T);
+	const [props, setProps] = useState<T | undefined>(undefined);
 
 	useEffect(() => {
 		if (!updated) {
@@ -56,5 +56,5 @@ export const useRouter = <T>() => {
 		}
 	});
 
-	return [props, setProps] as [T, React.Dispatch<React.SetStateAction<T>>];
+	return [props, setProps] as [T | undefined, React.Dispatch<React.SetStateAction<T>>];
 };

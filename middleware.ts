@@ -28,13 +28,29 @@ export const authMiddleWare = () => (request: Request, response: Response, next:
 					verifyToken(app, cookie as string)
 						//valid token returns an email
 						.then((user) => {
+							let { userType } = user;
 							//assign user to req header so action methods can fetch
 							request.headers["user"] = JSON.stringify(user);
+
 							//check that the user is not accessing login/register//
-							pathCheck(serverconfig.unauthorizedURlPaths, request, next, () => {
-								response.redirect("/home");
-								response.end();
-							});
+							pathCheck(
+								serverconfig.unauthorizedURlPaths,
+								request,
+								() => {
+									if (!request.path.split("/")[2] === userType) {
+										response.redirect("/home/" + userType);
+									}
+									if (request.path === "/home") {
+										response.redirect("/home/" + userType);
+									} else {
+										next();
+									}
+								},
+								() => {
+									response.redirect("/home");
+									response.end();
+								}
+							);
 						})
 						//invalid token, delete cookie and go to /
 						.catch((error) => {

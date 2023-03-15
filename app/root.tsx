@@ -5,9 +5,6 @@ import Route from "./components/navs/route";
 import { SideBar } from "./components/navs/SideBar";
 import { signout } from "./utils/firebaseClient";
 import stylesheet from "./tailwind.css";
-import { auth } from "../cookies";
-import { pathNameSlicer } from "./utils/handler";
-import serverConfig from "../server.config";
 import { getAuthState } from "./utils/browserCookieRead";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
