@@ -29,7 +29,7 @@ export default function App() {
 				<SideBar>
 					<NavBar>
 						<NavSandwhich />
-						<NavItem name="GAAS" />
+						<NavItem name="GAAS" route={getAuthState() ? "/home" : "/"} />
 						<Route />
 						{getAuthState() ? (
 							<NavButton

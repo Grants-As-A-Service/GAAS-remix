@@ -5,7 +5,7 @@ import router from "~/utils/router";
 import { UserContextADT } from "../register";
 import { Form, FormInput, FormButton } from "../../components/forms/Form";
 import { useFormValidation, useFormValidationPost, validEmail, validPassword } from "../../components/hooks/formValidation";
-import { bodyParserHandler, mongoHandler, responseHandler } from "~/utils/handler";
+import { bodyParserHandler, mongoHandler, mongoHandlerThrows, responseHandler } from "~/utils/handler";
 import { AccountBuilder } from "buisnessObjects/account";
 import { createAccount } from "db/controllers/accountController";
 
@@ -15,11 +15,9 @@ export async function action({ request }: { request: Request }) {
 
 	let account = bodyParserHandler(new AccountBuilder(body));
 
-	let [res, status] = await mongoHandler(createAccount(account));
+	let res = (await mongoHandlerThrows(createAccount(account))) as any;
 
-	return new Response(JSON.stringify(res), {
-		status: status,
-	});
+	return new Response(JSON.stringify(res));
 }
 
 type UserLogin = { email: string; password: string; confirmPassword: string; number: string; name: string };
@@ -59,9 +57,10 @@ export default function User() {
 							name: state.name,
 							email: state.email,
 							phone: state.number,
-						} as Account),
+						}),
 					})
 				);
+
 				setUser({
 					email: state.email,
 					phone: state.number,

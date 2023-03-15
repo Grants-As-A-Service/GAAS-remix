@@ -5,19 +5,20 @@ import { Link, ShouldRevalidateFunction, useLoaderData } from "@remix-run/react"
 import { getProjects } from "db/controllers/projectController";
 import { useEffect } from "react";
 import { ErrorComp } from "../../components/error";
+import router from "~/utils/router";
 
 export const loader = async ({ request }: LoaderArgs) => {
-	let { email, userType } = JSON.parse(request.headers.get("user") as string);
+	let { email, userType, accountId } = JSON.parse(request.headers.get("user") as string);
 
-	let [[account, projects], status] = await multiHandler<[Account, Project]>([getAccount(email), getProjects()]);
+	let [[account, projects], status] = await multiHandler<[Account, Array<Project>]>([getAccount(email), getProjects(accountId)]);
 
-	return json({ account, projects: [projects], userType }, { status: status });
+	return json({ account, projects, userType }, { status: status });
 };
 
 export const ErrorBoundary = ErrorComp;
 
 export default function Dashboard() {
-	const { account, userType } = useLoaderData<typeof loader>();
+	const { account, userType, projects } = useLoaderData<typeof loader>();
 
 	return (
 		<div className="grid place-items-left items-start flex-1 ml-20">
@@ -28,8 +29,28 @@ export default function Dashboard() {
 						<h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">{userType}</h1>
 					</div>
 
-					<h1 className="font-title mb-2 text-2xl sm:text-2xl lg:text-2xl">Your Projects</h1>
-
+					<h1 className="font-title mb-2 text-2xl py-2">Your Projects</h1>
+					<div className="w-full flex flex-row flex-wrap py-2 gap-10">
+						{projects.map((project) => {
+							return (
+								<div className="card w-64 bg-primary text-primary-content">
+									<div className="card-body">
+										<div className="flex flex-row w-full justify-between">
+											<div className="flex flex-col">
+												<h2 className="card-title">{project.name}</h2>
+												<p className="text-primary-content">{project.status}</p>
+											</div>
+											<div className="card-actions justify-end">
+												<button className="btn" onClick={() => router.navigateWithProps("/home/view/project", project)}>
+													View
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
 					<div className="mb-2 flex flex-row gap-10"></div>
 					<Link to="/home/create/project" className="btn btn-md btn-secondary">
 						Create a Project

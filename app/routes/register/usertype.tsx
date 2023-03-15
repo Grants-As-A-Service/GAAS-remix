@@ -1,28 +1,34 @@
 import { useFetcher, useOutletContext } from "@remix-run/react";
-import { setType, init } from "../../lib/firebaseAdmin.server";
+import { setClaims, init } from "../../lib/firebaseAdmin.server";
 import { UserContextADT } from "~/routes/register";
 import { setUserType } from "~/utils/firebaseClient";
+import { getAccountId } from "db/controllers/accountController";
+import { mongoHandlerThrows } from "~/utils/handler";
 
 export async function action({ request }: { request: Request }) {
-	let { userType, uid } = await request.json();
+	let { userType, email, uid } = await request.json();
 
-	let admin = init("remix");
+	let app = init("remix");
 
-	await setType(admin, uid, userType);
+	let accountID = await mongoHandlerThrows(getAccountId(email));
 
-	await admin.delete();
+	
+
+	await setClaims(app, uid, userType, accountID);
+
+	await app.delete();
 
 	return new Response(null);
 }
 
 export default function UserType() {
-	const { setType } = useOutletContext<UserContextADT>();
+	const { setType, user } = useOutletContext<UserContextADT>();
 
 	const submitTypeFirebase = async (type: UserType) => {
 		await setUserType((uid) => {
 			return fetch("/register/usertype", {
 				method: "post",
-				body: JSON.stringify({ userType: type, uid }),
+				body: JSON.stringify({ userType: type, uid, email: user?.email }),
 			});
 		});
 		setType(type);

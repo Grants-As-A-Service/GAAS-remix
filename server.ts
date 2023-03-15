@@ -17,6 +17,7 @@ const BUILD_DIR = path.join(process.cwd(), "build");
 
 const app = express();
 
+
 app.use(compression());
 
 app.disable("x-powered-by");

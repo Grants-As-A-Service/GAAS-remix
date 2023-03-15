@@ -31,6 +31,7 @@ export const mongoHandlerThrows = async <T>(promise: Promise<T>) => {
 	try {
 		return await promise;
 	} catch (error) {
+		console.log(error);
 		throw json((error as MongoServerError).code);
 	}
 };

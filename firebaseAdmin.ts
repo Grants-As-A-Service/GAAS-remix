@@ -23,16 +23,12 @@ export const init = (name: string) => {
 };
 
 export const verifyToken = (app: admin.app.App, token: string) => {
-	return new Promise<{ email: string; userType: UserType }>((resolve, reject) => {
+	return new Promise<any>((resolve, reject) => {
 		app.auth()
 			.verifyIdToken(token, true)
 			.then((user) => {
-				resolve({
-					email: user.email as string,
-					userType: user.userType,
-				});
+				resolve(user);
 			})
 			.catch(reject);
 	});
 };
-

@@ -29,6 +29,10 @@ const Project = new mongoose.Schema({
 		type: Date,
 		required: true,
 	},
+    status: {
+        type: String,
+		required: true,
+    }
 });
 
-export const ProjectModel = mongoose.models.Account || mongoose.model("project", Project);
+export const ProjectModel = mongoose.models.Project || mongoose.model("Project", Project);

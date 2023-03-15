@@ -22,9 +22,9 @@ export const init = (name: string) => {
 	);
 };
 
-export const setType = (app: admin.app.App, userId: string, userType: UserType) => {
+export const setClaims = (app: admin.app.App, userId: string, userType: UserType, accountId: string) => {
+	console.log(accountId, "accountid");
 	return new Promise<void>((resolve, reject) => {
-		console.log("setting type");
-		app.auth().setCustomUserClaims(userId, { userType }).then(resolve).catch(reject);
+		app.auth().setCustomUserClaims(userId, { userType, accountId }).then(resolve).catch(reject);
 	});
 };

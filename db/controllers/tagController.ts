@@ -5,12 +5,12 @@ const getTags = () => {
 	return TagModel.find();
 };
 
-const createTag = async (tag: Tag) => {
+const createTag = (tag: Tag, projectId: string) => {
 	return new Promise((resolve, reject) => {
 		try {
 			TagZod.parse(tag);
 
-			const tagDocument = new TagModel(tag);
+			const tagDocument = new TagModel({ ...tag, projectId });
 
 			tagDocument.save().then(resolve).catch(reject);
 		} catch (error) {
