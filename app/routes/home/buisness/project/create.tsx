@@ -63,7 +63,7 @@ export default function ProjectOnbaord() {
 			}
 		},
 		(state: Project) => {
-			return fetch("/home/buisness/create/project", {
+			return fetch("/home/buisness/project/create", {
 				method: "post",
 				body: JSON.stringify({
 					project: state,
@@ -167,7 +167,7 @@ export default function ProjectOnbaord() {
 								};
 								return (
 									<Form customWidth="max-w-sm">
-										<h3 className="font-title mb-2 text-lg">Tag: {tagName}</h3>
+										<h3 className="font-title mb-2 text-lg">{tagName}</h3>
 										<FormLabel>Strength</FormLabel>
 										<input
 											type="range"

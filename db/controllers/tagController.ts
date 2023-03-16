@@ -1,8 +1,8 @@
 import { TagZod } from "buisnessObjects/tag";
 import { TagModel } from "../models/tag";
 
-const getTags = () => {
-	return TagModel.find();
+const getTags = (projectId: string) => {
+	return TagModel.find({ projectId: projectId });
 };
 
 const createTag = (tag: Tag, projectId: string) => {

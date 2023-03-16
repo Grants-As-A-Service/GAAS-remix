@@ -71,6 +71,10 @@ declare global {
 		createdAt: Date;
 	};
 
+	type ID = {
+		_id: string;
+	};
+
 	type TagName = {
 		name: string;
 	};

@@ -7,6 +7,7 @@ import { signout } from "./utils/firebaseClient";
 import stylesheet from "./tailwind.css";
 import { getAuthState } from "./utils/browserCookieRead";
 
+
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
 
 export const meta: MetaFunction = () => ({

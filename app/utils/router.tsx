@@ -13,6 +13,9 @@ export default {
 
 		return JSON.parse(decodeURIComponent(url.searchParams.get("props") as string));
 	},
+	navigateWithObject: (route: string, object: any) => {
+		window.location.href = route + "?" + new URLSearchParams(object);
+	},
 	current: () => {
 		if (window !== undefined) {
 			return window.location.pathname;

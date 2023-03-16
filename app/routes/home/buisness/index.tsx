@@ -6,6 +6,7 @@ import { getProjects } from "db/controllers/projectController";
 import { useEffect } from "react";
 import { ErrorComp } from "../../../components/error";
 import router from "~/utils/router";
+import { Card } from "~/components/card";
 
 export const loader = async ({ request }: LoaderArgs) => {
 	let { email, userType, accountId } = JSON.parse(request.headers.get("user") as string);
@@ -33,17 +34,15 @@ export default function Dashboard() {
 					<div className="w-full flex flex-row flex-wrap py-2 gap-10">
 						{projects.map((project) => {
 							return (
-								<div className="card w-64 bg-primary text-primary-content">
+								<div
+									className="card w-64 bg-primary text-primary-content hover:bg-primary-focus"
+									onClick={() => router.navigateWithProps("/home/buisness/project/view", project)}
+								>
 									<div className="card-body">
 										<div className="flex flex-row w-full justify-between">
 											<div className="flex flex-col">
 												<h2 className="card-title">{project.name}</h2>
 												<p className="text-primary-content">{project.status}</p>
-											</div>
-											<div className="card-actions justify-end">
-												<button className="btn" onClick={() => router.navigateWithProps("/home/buisness/project/view", project)}>
-													View
-												</button>
 											</div>
 										</div>
 									</div>

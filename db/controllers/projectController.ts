@@ -1,19 +1,8 @@
 import { ProjectZod } from "buisnessObjects/project";
 import { ProjectModel } from "../models/project";
 
-const getProjects = async (accountId: string): Promise<Project[]> => {
-	return (await ProjectModel.find({ owner: accountId })).map((doc) => {
-		console.log(doc);
-		return {
-			name: doc.name,
-			description: doc.description,
-			startDate: doc.startDate,
-			endDate: doc.endDate,
-			capex: doc.capex,
-			annualOpex: doc.annualOpex,
-			status: doc.status,
-		};
-	});
+const getProjects = (accountId: string): Promise<Project[]> => {
+	return ProjectModel.find({ owner: accountId });
 };
 
 const createProject = async (project: Project, accountID: string) => {
