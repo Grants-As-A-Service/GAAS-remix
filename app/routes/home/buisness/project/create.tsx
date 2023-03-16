@@ -15,7 +15,7 @@ import router from "~/utils/router";
 export async function action({ request }: ActionArgs) {
 	let { accountId } = JSON.parse(request.headers.get("user") as string);
 	let body = await request.json();
-
+	console.log(body);
 	let project = bodyParserHandler(new ProjectBuilder(body.project));
 	let tags = body.tags.map((tag: any) => {
 		let { tagNameId, ...otherTag } = tag;
@@ -33,7 +33,6 @@ export async function action({ request }: ActionArgs) {
 }
 
 export async function loader({ request }: LoaderArgs) {
-
 	let [tags] = await multiHandlerThrows<[Array<any>]>([getTagNames()]);
 
 	return json({ tags });
