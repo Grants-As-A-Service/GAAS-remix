@@ -23,7 +23,7 @@ export default function GrantView() {
 			<div className="flex flex-row flex-wrap w-full gap-5 pt-4">
 				{grants.map((grant: Grant) => {
 					return (
-						<div>
+						<Form>
 							<h3 className="font-title mb-2 text-lg">{grant.creator}</h3>
 							<h1>{grant.title}</h1>
 							<div className="pb-5" />
@@ -39,7 +39,7 @@ export default function GrantView() {
                                     <h3 className="font-title mb-2 text-lg">{tag}</h3>
                                 })}
                             </>
-						</div>
+						</Form>
 					);
 				})}
 			</div>	
