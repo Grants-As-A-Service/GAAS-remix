@@ -8,13 +8,11 @@ import { mongoHandlerThrows } from "~/utils/handler";
 export async function action({ request }: { request: Request }) {
 	let { userType, email, uid } = await request.json();
 
-	let app = init("remix");
+	const app = init(Math.random().toString()); //lets pretend we both didnt see this
 
 	let accountID = await mongoHandlerThrows(getAccountId(email));
 
 	await setClaims(app, uid, userType, accountID);
-
-	await app.delete();
 
 	return new Response(null);
 }

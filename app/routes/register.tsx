@@ -32,7 +32,7 @@ export default function Register() {
 			let props = { type, user };
 			if (user && type) {
 				let route = type === "buisness" ? "/register/buisness" : "/register/government";
-				console.log(props);
+		
 				if (route !== router.current()) {
 					router.navigateWithProps(route, props);
 				}

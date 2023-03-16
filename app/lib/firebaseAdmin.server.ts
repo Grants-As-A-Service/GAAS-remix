@@ -23,7 +23,6 @@ export const init = (name: string) => {
 };
 
 export const setClaims = (app: admin.app.App, userId: string, userType: UserType, accountId: string) => {
-	console.log(accountId, "accountid");
 	return new Promise<void>((resolve, reject) => {
 		app.auth().setCustomUserClaims(userId, { userType, accountId }).then(resolve).catch(reject);
 	});
