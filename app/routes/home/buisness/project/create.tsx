@@ -133,7 +133,7 @@ export default function ProjectOnbaord() {
 																	name: tagDoc.name,
 																	description: "",
 																	quantifier: 0,
-																});
+																});																
 																return newTags;
 															});
 														}}

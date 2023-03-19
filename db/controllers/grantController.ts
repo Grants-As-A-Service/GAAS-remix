@@ -1,7 +1,7 @@
 import { GrantZod } from "buisnessObjects/grant";
 import { GrantModel } from "../models/grant";
 
-export const getGrants = async () => {
+const getGrants = async () => {
 	return GrantModel.find();
 };
 
@@ -11,6 +11,14 @@ const getCreatedGrants = (accountId: string) => {
 
 const getAllGrants = () => {
     return GrantModel.find();
+}
+
+const getGrantsWithTags = (tagNames: string[]) => {
+    return GrantModel.find({
+        tags: {
+            $in: tagNames
+        }
+    });
 }
 
 const createGrant = async (grant: Grant) => {
@@ -25,4 +33,4 @@ const createGrant = async (grant: Grant) => {
 	});
 };
 
-export { getGrant, getCreatedGrants, getAllGrants, createGrant };
+export { getGrants, getCreatedGrants, getAllGrants, getGrantsWithTags, createGrant };
