@@ -11,9 +11,6 @@ import { getTags } from "db/controllers/tagController";
 export async function loader({ request, params }: LoaderArgs) {
 	const url = new URL(request.url);
 	const project = JSON.parse(url.searchParams.get("props") as string) as Project & ID;
-
-	console.log(project);
-
 	let tags = await mongoHandlerThrows(getTags(project._id));
 
 	return json({ project, tags });

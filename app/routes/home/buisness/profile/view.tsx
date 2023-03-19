@@ -7,11 +7,14 @@ import { mongoHandlerThrows } from "~/utils/handler";
 import { Form, FormLabel } from "~/components/forms/Form";
 import { getGrants } from "db/controllers/grantController";
 import { Card } from "~/components/card";
+import { getAccount } from "db/controllers/accountController";
 
 export async function loader({ request, params }: LoaderArgs) {
-	let profile = await mongoHandlerThrows(getAccount());
+    const url = new URL(request.url);
+	const profile = JSON.parse(url.searchParams.get("props") as string) as Account & ID;
+	let profileView = await mongoHandlerThrows(getAccount(profile._id));
 
-	return json({ profile });
+	return json({ profileView });
 }
 
 export default function ProfileView() {
