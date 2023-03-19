@@ -3,9 +3,13 @@ import { GrantModel } from "../models/grant";
 
 const getGrant = async (request: any) => {};
 
-export const getCreatedGrants = (accountId: string) => {
+const getCreatedGrants = (accountId: string) => {
 	return GrantModel.find({ creator: accountId });
 };
+
+const getAllGrants = () => {
+    return GrantModel.find();
+}
 
 const createGrant = async (grant: Grant) => {
 	return new Promise((resolve, reject) => {
@@ -19,4 +23,4 @@ const createGrant = async (grant: Grant) => {
 	});
 };
 
-export { getGrant, getGrants, createGrant };
+export { getGrant, getCreatedGrants, getAllGrants, createGrant };
