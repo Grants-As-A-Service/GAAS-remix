@@ -10,11 +10,10 @@ import { Card } from "~/components/card";
 import { getAccount } from "db/controllers/accountController";
 
 export async function loader({ request, params }: LoaderArgs) {
-    const url = new URL(request.url);
-	const profile = JSON.parse(url.searchParams.get("props") as string) as Account & ID;
-	let profileView = await mongoHandlerThrows(getAccount(profile._id));
+    let { accountId } = JSON.parse(request.headers.get("user") as string); 
+	let account = getAccountFromId(accountId) 
 
-	return json({ profileView });
+	return json({ account });
 }
 
 export default function ProfileView() {
