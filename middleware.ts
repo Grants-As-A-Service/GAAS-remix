@@ -31,7 +31,8 @@ export const authMiddleWare = () => (request: Request, response: Response, next:
 							let { userType } = user;
 							//assign user to req header so action methods can fetch
 							request.headers["user"] = JSON.stringify(user);
-
+							console.log(user);
+							
 							//check that the user is not accessing login/register//
 							pathCheck(
 								serverconfig.unauthorizedURlPaths,
