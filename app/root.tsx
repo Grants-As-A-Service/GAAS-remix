@@ -51,7 +51,7 @@ export default function App() {
 									title="Account"
 									menu={[
 										<li>
-											<a href={"/home/account"}>account</a>
+											<a href={"/home/profile"}>account</a>
 										</li>,
 										<li>
 											<a href="/logout">log out</a>
