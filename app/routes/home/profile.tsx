@@ -7,28 +7,28 @@ import { mongoHandlerThrows } from "~/utils/handler";
 import { Form, FormLabel } from "~/components/forms/Form";
 import { getGrants } from "db/controllers/grantController";
 import { Card } from "~/components/card";
-import { getAccount } from "db/controllers/accountController";
+import { getAccount, getAccountId } from "db/controllers/accountController";
 
 export async function loader({ request, params }: LoaderArgs) {
-    let { accountId } = JSON.parse(request.headers.get("user") as string); 
-	let account = getAccountFromId(accountId) 
+	let { email } = JSON.parse(request.headers.get("user") as string);
+	let account = await mongoHandlerThrows<Account>(getAccount(email));
 
 	return json({ account });
 }
 
 export default function ProfileView() {
-	const { profile } = useLoaderData<typeof loader>();
+	const { account } = useLoaderData<typeof loader>();
 
 	return (
 		<Title title="View Grants" foot="All availible Grants.">
 			<h1 className="font-title mb-2 text-2xl pt-6">Profile</h1>
 			<div className="flex flex-row flex-wrap w-full gap-5 pt-4">
-                <Form>
-                    <h1>{profile.name}</h1>
-                    <h3 className="font-title mb-2 text-lg">{profile.email}</h3>
-                    <h3 className="font-title mb-2 text-lg">{profile.phone}</h3>
-                </Form>
-			</div>	
+				<Form>
+					<h1>{account.name}</h1>
+					<h3 className="font-title mb-2 text-lg">{account.email}</h3>
+					<h3 className="font-title mb-2 text-lg">{account.phone}</h3>
+				</Form>
+			</div>
 		</Title>
 	);
 }
