@@ -19,26 +19,48 @@ export const NavSandwhich = () => (
 	</span>
 );
 
-export const NavDropDown = ({ title, menu }: { title: string; menu: Array<string> }) => (
-	<div className="flex-none">
-		<ul className="menu menu-horizontal px-1">
-			<li tabIndex={0}>
-				<a>
-					{title}
-					<svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-						<path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
-					</svg>
-				</a>
-				<ul className="p-2 bg-base-100">
-					{menu.map((item, key) => (
-						<li key={key}>
-							<Link to={item}>{item}</Link>
-						</li>
-					))}
-				</ul>
-			</li>
+export const NavDropDown = ({ title, menu }: { title: string; menu: Array<string | React.ReactNode> }) => (
+	<div className="dropdown dropdown-end dropdown-hover">
+		<div className="flex flex-row justify-center content-center gap-2">
+			{title}
+			<svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+				<path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+			</svg>
+		</div>
+		<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+			{menu.map((item, key) =>
+				typeof item === "string" ? (
+					<li key={key}>
+						<a href={item}>{item}</a>
+					</li>
+				) : (
+					item
+				)
+			)}
 		</ul>
 	</div>
+
+	// <ul className="menu menu-horizontal px-1">
+	// 	<li tabIndex={0}>
+	// 		<a>
+	// 			{title}
+	// 			<svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+	// 				<path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+	// 			</svg>
+	// 		</a>
+	// 		<ul className="p-2 bg-base-100">
+	// 			{menu.map((item, key) =>
+	// 				typeof item === "string" ? (
+	// 					<li key={key}>
+	// 						<a href={item}>{item}</a>
+	// 					</li>
+	// 				) : (
+	// 					item
+	// 				)
+	// 			)}
+	// 		</ul>
+	// 	</li>
+	// </ul>
 );
 
 export const NavEnd = ({ children }: ChildProps) => (

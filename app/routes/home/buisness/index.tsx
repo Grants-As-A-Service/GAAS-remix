@@ -35,7 +35,7 @@ export default function Dashboard() {
 						{projects.map((project) => {
 							return (
 								<div
-									className="card w-64 bg-primary text-primary-content hover:bg-primary-focus"
+									className="card w-64 bg-primary text-primary-content hover:bg-primary-focus hover:cursor-pointer"
 									onClick={() => router.navigateWithProps("/home/buisness/project/view", project)}
 								>
 									<div className="card-body">

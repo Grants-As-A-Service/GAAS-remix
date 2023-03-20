@@ -4,6 +4,10 @@ const getAccount = (email: string) => {
 	return AccountModel.findOne({ email: email });
 };
 
+export const getAccountFromId = (id: string) => {
+	return AccountModel.findOne({ _id: id });
+};
+
 const getAccountId = async (email: string) => {
 	return (await AccountModel.findOne({ email: email }))._id;
 };

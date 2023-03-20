@@ -1,12 +1,12 @@
 import { json, LinksFunction, LoaderArgs, MetaFunction, redirect } from "@remix-run/node";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import { Link, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { NavBar, NavSandwhich, NavItem, NavDropDown, NavButton } from "./components/navs/NavBar";
 import Route from "./components/navs/route";
 import { SideBar } from "./components/navs/SideBar";
 import { signout } from "./utils/firebaseClient";
 import stylesheet from "./tailwind.css";
-import { getAuthState } from "./utils/browserCookieRead";
-
+import { getAccount, getAccountFromId } from "db/controllers/accountController";
+import { mongoHandlerThrows } from "./utils/handler";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: stylesheet }];
 
@@ -16,7 +16,23 @@ export const meta: MetaFunction = () => ({
 	viewport: "width=device-width,initial-scale=1",
 });
 
+export async function loader({ request }: LoaderArgs) {
+	let user = JSON.parse(request.headers.get("user") as string);
+
+	if (user) {
+		let userType = "userType" in user ? user.userType : "";
+
+		let account = await mongoHandlerThrows(getAccountFromId(user.accountId));
+
+		return json({ userType: userType, account: account, isLoggedIn: true });
+	} else {
+		return json({ userType: undefined, account: undefined, isLoggedIn: false });
+	}
+}
+
 export default function App() {
+	const { isLoggedIn, userType, account } = useLoaderData<typeof loader>();
+
 	return (
 		<html lang="en" data-theme="night">
 			<head>
@@ -27,19 +43,35 @@ export default function App() {
 				<SideBar>
 					<NavBar>
 						<NavSandwhich />
-						<NavItem name="GAAS" route={getAuthState() ? "/home" : "/"} />
+						<NavItem name="GAAS" route={isLoggedIn ? "/home/" + userType : "/"} />
 						<Route />
-						{getAuthState() ? (
-							<NavButton
-								name="sign out"
-								onClick={() => {
-									console.log("signining out");
-									signout();
-								}}
-							/>
-						) : (
-							<NavDropDown title="Account" menu={["login", "register"]} />
-						)}
+						<div className="flex-none">
+							{isLoggedIn ? (
+								<NavDropDown
+									title="Account"
+									menu={[
+										<li>
+											<a href={"/home/account"}>account</a>
+										</li>,
+										<li>
+											<a href="/logout">log out</a>
+										</li>,
+									]}
+								/>
+							) : (
+								<NavDropDown
+									title="Account"
+									menu={[
+										<li>
+											<a href="/login">sign in</a>
+										</li>,
+										<li>
+											<a href="/register">register</a>
+										</li>,
+									]}
+								/>
+							)}
+						</div>
 					</NavBar>
 					<Outlet />
 				</SideBar>
