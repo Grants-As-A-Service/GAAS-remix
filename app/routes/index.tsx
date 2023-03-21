@@ -1,5 +1,4 @@
 import { Link } from "@remix-run/react";
-import GrantBusinessMatcher from "~/utils/grantMatcher";
 
 export default function RootLayout() {
     return (

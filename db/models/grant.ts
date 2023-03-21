@@ -15,4 +15,4 @@ const GrantSchema = new mongoose.Schema({
 	},
 });
 
-export const GrantModel = mongoose.models.Grant || mongoose.model("Grant", GrantSchema);
+export const GrantModel = mongoose.models?.Grant || mongoose.model("Grant", GrantSchema);

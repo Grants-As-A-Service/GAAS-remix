@@ -16,4 +16,4 @@ export const AccountSchema = new mongoose.Schema({
     },
 });
 
-export const AccountModel = mongoose.models.Account || mongoose.model("Account", AccountSchema);
+export const AccountModel = mongoose.models?.Account || mongoose.model("Account", AccountSchema);

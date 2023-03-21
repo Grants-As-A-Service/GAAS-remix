@@ -7,24 +7,19 @@ import { useEffect } from "react";
 import { ErrorComp } from "../../../components/error";
 import router from "~/utils/router";
 import { Card } from "~/components/card";
-import { GrantBusinessMatcher, MatchGrantsToProject } from "~/utils/grantMatcher";
 
 export const loader = async ({ request }: LoaderArgs) => {
 	let { email, userType, accountId } = JSON.parse(request.headers.get("user") as string);
 
 	let [[account, projects], status] = await multiHandler<[Account, Array<Project>]>([getAccount(email), getProjects(accountId)]);
 
-	return json({ account, projects, userType, accountId }, { status: status });
+	return json({ account, projects, userType }, { status: status });
 };
 
 export const ErrorBoundary = ErrorComp;
 
 export default function Dashboard() {
-	const { account, userType, projects, accountId } = useLoaderData<typeof loader>();
-	// GrantBusinessMatcher(accountId);
-	MatchGrantsToProject("64172e30c92d137a51d226b0").then(matches => {
-		console.log(matches);
-	});
+	const { account, userType, projects } = useLoaderData<typeof loader>();
 	return (
 		<div className="grid place-items-left items-start flex-1 ml-20">
 			<div className="hero-content col-start-1 row-start-1 w-full max-w-8xl justify-between pb-40 flex-row items-end gap-0">
