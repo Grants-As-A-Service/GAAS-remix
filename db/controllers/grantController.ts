@@ -5,6 +5,10 @@ const getGrants = async () => {
 	return GrantModel.find();
 };
 
+const getGrantById = async (grantId: string) => {
+	return GrantModel.findById(grantId);
+}
+
 const getCreatedGrants = (accountId: string) => {
 	return GrantModel.find({ creator: accountId });
 };
@@ -33,4 +37,4 @@ const createGrant = async (grant: Grant) => {
 	});
 };
 
-export { getGrants, getCreatedGrants, getAllGrants, getGrantsWithTags, createGrant };
+export { getGrants, getGrantById, getCreatedGrants, getAllGrants, getGrantsWithTags, createGrant };

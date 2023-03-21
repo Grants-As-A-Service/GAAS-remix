@@ -78,4 +78,9 @@ declare global {
 	type TagName = {
 		name: string;
 	};
+
+	type ProjectGrant = {
+		projectId: string;
+		grantId: string;
+	};
 }

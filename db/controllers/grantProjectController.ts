@@ -1,5 +1,16 @@
 import { GrantProjectModel } from "db/models/grantProject"
 
+const getGrantMatchesByProject = (projectId: string) => {
+    return GrantProjectModel.find({
+        projectId: projectId
+    });
+};
+
+const getGrantMatchesByGrant = (grantId: string) => {
+    return GrantProjectModel.find({
+        grantId
+    });
+}
 
 const createGrantProject = async (grantId: string, projectId: string) => {
     return new Promise((resolve, reject) => {
@@ -15,4 +26,4 @@ const createGrantProject = async (grantId: string, projectId: string) => {
     });
 }
 
-export { createGrantProject }
+export { createGrantProject, getGrantMatchesByProject, getGrantMatchesByGrant }
