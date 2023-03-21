@@ -38,7 +38,7 @@ export default function Login() {
 					<Form>
 						<h1 className="text-primary font-title text-2xl m-0 p-0">Personal</h1>
 						<FormInput name="email" onTyping={(e) => update(e.target.value, "email")} type="text" label="Email" />
-						<FormInput name="password" onTyping={(e) => update(e.target.value, "password")} type="text" label="Password" />
+						<FormInput name="password" onTyping={(e) => update(e.target.value, "password")} type="password" label="Password" />
 						<h2 className="py-2 text-red-600">{error}</h2>
 						<FormButton
 							onClick={(e) => {

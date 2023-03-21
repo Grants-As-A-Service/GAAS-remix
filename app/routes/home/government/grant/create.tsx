@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useLoaderData } from "@remix-run/react";
 import { Form, FormButton, FormInput, FormLabel } from "~/components/forms/Form";
 import { useFormValidationPost } from "~/components/hooks/formValidation";
-import { bodyParserHandler, mongoHandlerThrows } from "~/utils/handler";
+import { bodyParserHandler, mongoHandlerThrows, multiHandlerThrows } from "~/utils/handler";
 import { GrantBuilder } from "buisnessObjects/grant";
 import { createGrant } from "db/controllers/grantController";
 import router from "~/utils/router";
+import { MatchProjectsToGrant } from "~/utils/grantMatcher";
+import { createGrantProject } from "db/controllers/grantProjectController";
 
 export async function loader({ request }: LoaderArgs) {
 	let tags = await mongoHandlerThrows<Array<any>>(getTagNames());
@@ -23,7 +25,10 @@ export async function action({ request }: ActionArgs) {
 
 	let grant = bodyParserHandler(new GrantBuilder({ ...body, creator: accountId } as Grant));
 
-	await mongoHandlerThrows(createGrant(grant));
+	let grantDoc = await mongoHandlerThrows(createGrant(grant)) as any;
+
+	const projectMatches = await MatchProjectsToGrant(grantDoc._id.toString());
+	await multiHandlerThrows(projectMatches.map(projectId => createGrantProject(grantDoc._id.toString(), projectId)));
 
 	return new Response();
 }

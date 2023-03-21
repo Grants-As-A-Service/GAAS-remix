@@ -78,8 +78,8 @@ export default function User() {
 			<FormInput name="name" onTyping={(e) => update(e.target.value, "name")} type="text" label="Name" />
 			<FormInput name="email" onTyping={(e) => update(e.target.value, "email")} type="text" label="Email" />
 			<FormInput name="number" onTyping={(e) => update(e.target.value, "number")} type="number" label="Phone Number" />
-			<FormInput name="password" onTyping={(e) => update(e.target.value, "password")} type="text" label="Password" />
-			<FormInput onTyping={(e) => update(e.target.value, "confirmPassword")} type="text" label="Confirm Password" />
+			<FormInput name="password" onTyping={(e) => update(e.target.value, "password")} type="password" label="Password" />
+			<FormInput onTyping={(e) => update(e.target.value, "confirmPassword")} type="password" label="Confirm Password" />
 			<h2 className="py-2 text-red-600">{error}</h2>
 			<FormButton onClick={(e) => submit()}>Sign Up</FormButton>
 		</Form>

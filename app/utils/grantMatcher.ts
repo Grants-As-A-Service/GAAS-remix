@@ -41,13 +41,17 @@ export async function MatchProjectsToGrant(grantId: string): Promise<string[]> {
     const [grantData, grantDataStatus] = await mongoHandler(getGrantById(grantId));
     const matchedProjects = [] as string[];
     const projectSums = {} as {[projectId: string]: number};
-
+    
     if (grantDataStatus == 200) {
         const grant = grantData as Grant;
         const [tagData, tagDataStatus] = await mongoHandler(getTagsByName(grant.tags));
         if (tagDataStatus == 200) {
             for (let tag of tagData as (Tag & {projectId: string})[]) {
-                projectSums[tag.projectId] += tag.quantifier;
+                if (tag.projectId in projectSums) {
+                    projectSums[tag.projectId] += tag.quantifier;
+                } else {
+                    projectSums[tag.projectId] = tag.quantifier;
+                }
             }
         }
         
