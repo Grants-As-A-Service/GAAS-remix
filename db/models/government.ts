@@ -13,4 +13,4 @@ export const GovernmentSchema = new mongoose.Schema({
 	fundedProjects: Number,
 });
 
-export const GovernmentModel = mongoose.models.Government || mongoose.model("Government", GovernmentSchema);
+export const GovernmentModel = mongoose.models?.Government || mongoose.model("Government", GovernmentSchema);
