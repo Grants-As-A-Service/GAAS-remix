@@ -1,6 +1,6 @@
 import { ErrorBoundaryComponent, json, LoaderArgs } from "@remix-run/node";
 import { mongoHandler, mongoHandlerThrows, multiHandlerThrows } from "../../../utils/handler";
-import { getAccount } from "../../../../db/controllers/accountController";
+import { getAccountFromId } from "../../../../db/controllers/accountController";
 import { Link, ShouldRevalidateFunction, useLoaderData } from "@remix-run/react";
 import { getProjects } from "db/controllers/projectController";
 import { useEffect } from "react";
@@ -10,9 +10,9 @@ import { getCreatedGrants } from "db/controllers/grantController";
 import { Card } from "~/components/card";
 
 export const loader = async ({ request }: LoaderArgs) => {
-	let { email, userType, accountId } = JSON.parse(request.headers.get("user") as string);
+	let { userType, accountId } = JSON.parse(request.headers.get("user") as string);
 
-	let [account, grantsDb] = await multiHandlerThrows<[Account, Array<Grant>]>([getAccount(email), getCreatedGrants(accountId)]);
+	let [account, grantsDb] = await multiHandlerThrows<[Account, Array<Grant>]>([getAccountFromId(accountId), getCreatedGrants(accountId)]);
 
 	return json({ userType, account, grants: grantsDb });
 };
