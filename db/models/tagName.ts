@@ -7,4 +7,4 @@ const TagNameSchema = new mongoose.Schema({
 	},
 });
 
-export const TagNameModel = mongoose.models.TagName || mongoose.model("TagName", TagNameSchema);
+export const TagNameModel = mongoose.models?.TagName || mongoose.model("TagName", TagNameSchema);

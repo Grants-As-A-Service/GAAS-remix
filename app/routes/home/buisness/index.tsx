@@ -20,7 +20,6 @@ export const ErrorBoundary = ErrorComp;
 
 export default function Dashboard() {
 	const { account, userType, projects } = useLoaderData<typeof loader>();
-
 	return (
 		<div className="grid place-items-left items-start flex-1 ml-20">
 			<div className="hero-content col-start-1 row-start-1 w-full max-w-8xl justify-between pb-40 flex-row items-end gap-0">

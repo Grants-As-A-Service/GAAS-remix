@@ -11,6 +11,8 @@ import { TagBuilder } from "buisnessObjects/tag";
 import { createTag } from "db/controllers/tagController";
 import { getAccountId } from "db/controllers/accountController";
 import router from "~/utils/router";
+import { MatchGrantsToProject } from "~/utils/grantMatcher";
+import { createGrantProject } from "db/controllers/grantProjectController";
 
 export async function action({ request }: ActionArgs) {
 	let { accountId } = JSON.parse(request.headers.get("user") as string);
@@ -28,6 +30,10 @@ export async function action({ request }: ActionArgs) {
 	let projectDoc = (await mongoHandlerThrows(createProject(project, accountId))) as any;
 
 	await multiHandlerThrows([...tags.map((tag: Tag) => createTag(tag, projectDoc._id))]);
+
+	// Match with grants and save results
+	const matchedGrants = await MatchGrantsToProject(projectDoc._id.toString());
+	await multiHandlerThrows(matchedGrants.map(grantId => createGrantProject(grantId, projectDoc._id.toString())));
 
 	return new Response();
 }
@@ -133,7 +139,7 @@ export default function ProjectOnbaord() {
 																	name: tagDoc.name,
 																	description: "",
 																	quantifier: 0,
-																});
+																});																
 																return newTags;
 															});
 														}}

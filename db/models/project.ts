@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Project = new mongoose.Schema({
+const ProjectSchema = new mongoose.Schema({
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Account",
@@ -35,4 +35,4 @@ const Project = new mongoose.Schema({
     }
 });
 
-export const ProjectModel = mongoose.models.Project || mongoose.model("Project", Project);
+export const ProjectModel = mongoose.models?.Project || mongoose.model("Project", ProjectSchema);

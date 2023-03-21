@@ -5,6 +5,10 @@ const getProjects = (accountId: string): Promise<Project[]> => {
 	return ProjectModel.find({ owner: accountId });
 };
 
+const getProject = (projectId: string) => {{
+	return ProjectModel.findById(projectId);
+}}
+
 const createProject = async (project: Project, accountID: string) => {
 	return new Promise((resolve, reject) => {
 		try {
@@ -20,4 +24,4 @@ const createProject = async (project: Project, accountID: string) => {
 	});
 };
 
-export { getProjects, createProject };
+export { getProjects, getProject, createProject };
