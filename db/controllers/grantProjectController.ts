@@ -6,6 +6,12 @@ const getGrantMatchesByProject = (projectId: string) => {
     });
 };
 
+const getGrantMatchesByGrant = (grantId: string) => {
+    return GrantProjectModel.find({
+        grantId
+    });
+}
+
 const createGrantProject = async (grantId: string, projectId: string) => {
     return new Promise((resolve, reject) => {
         try {
@@ -20,4 +26,4 @@ const createGrantProject = async (grantId: string, projectId: string) => {
     });
 }
 
-export { createGrantProject, getGrantMatchesByProject }
+export { createGrantProject, getGrantMatchesByProject, getGrantMatchesByGrant }

@@ -19,7 +19,7 @@ export async function action({ request }: ActionArgs) {
 	let { accountId } = JSON.parse(request.headers.get("user") as string);
 	let body = await request.json();
 
-	console.log(body);
+	console.log({ ...body, creator: accountId });
 
 	let grant = bodyParserHandler(new GrantBuilder({ ...body, creator: accountId } as Grant));
 

@@ -1,6 +1,6 @@
-import { getGrantsWithTags } from "db/controllers/grantController";
+import { getGrantById, getGrantsWithTags } from "db/controllers/grantController";
 import { getProject } from "db/controllers/projectController";
-import { getTags } from "db/controllers/tagController";
+import { getTags, getTagsByName } from "db/controllers/tagController";
 import { mongoHandler } from "./handler";
 
 const MATCH_THRESHOLD = 5;
@@ -35,4 +35,28 @@ export async function MatchGrantsToProject(projectId: string): Promise<string[]>
     }
 
     return matchedGrants;
+}
+
+export async function MatchProjectsToGrant(grantId: string): Promise<string[]> {
+    const [grantData, grantDataStatus] = await mongoHandler(getGrantById(grantId));
+    const matchedProjects = [] as string[];
+    const projectSums = {} as {[projectId: string]: number};
+
+    if (grantDataStatus == 200) {
+        const grant = grantData as Grant;
+        const [tagData, tagDataStatus] = await mongoHandler(getTagsByName(grant.tags));
+        if (tagDataStatus == 200) {
+            for (let tag of tagData as (Tag & {projectId: string})[]) {
+                projectSums[tag.projectId] += tag.quantifier;
+            }
+        }
+        
+        for (let projectId of Object.keys(projectSums)) {
+            if (projectSums[projectId] > MATCH_THRESHOLD) {
+                matchedProjects.push(projectId);
+            }
+        }
+    }
+
+    return matchedProjects;
 }

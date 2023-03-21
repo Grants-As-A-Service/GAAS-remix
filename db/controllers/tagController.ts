@@ -5,6 +5,14 @@ const getTags = (projectId: string) => {
 	return TagModel.find({ projectId: projectId });
 };
 
+const getTagsByName = (tags: string[]) => {
+	return TagModel.find({
+		name: {
+			$in: tags
+		}
+	});
+}
+
 const createTag = (tag: Tag, projectId: string) => {
 	return new Promise((resolve, reject) => {
 		try {
@@ -20,4 +28,4 @@ const createTag = (tag: Tag, projectId: string) => {
 	});
 };
 
-export { getTags, createTag };
+export { getTags, getTagsByName, createTag };

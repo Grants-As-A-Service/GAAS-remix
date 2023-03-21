@@ -8,7 +8,6 @@ const getProjects = (accountId: string): Promise<Project[]> => {
 const getProject = (projectId: string) => {{
 	return ProjectModel.findById(projectId);
 }}
-
 const createProject = async (project: Project, accountID: string) => {
 	return new Promise((resolve, reject) => {
 		try {
