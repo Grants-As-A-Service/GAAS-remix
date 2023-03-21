@@ -40,7 +40,7 @@ export default function App() {
 				<Links />
 			</head>
 			<body style={{ margin: 0 }}>
-				<SideBar>
+				<SideBar isLoggedIn={isLoggedIn} userType={userType}>
 					<NavBar>
 						<NavSandwhich />
 						<NavItem name="GAAS" route={isLoggedIn ? "/home/" + userType : "/"} />

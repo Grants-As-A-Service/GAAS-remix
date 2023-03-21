@@ -1,4 +1,6 @@
-export const SideBar = ({ children }: { children: React.ReactNode }) => (
+import { Link } from "@remix-run/react";
+
+export const SideBar = ({ children, isLoggedIn, userType }: { children: React.ReactNode; userType: UserType; isLoggedIn: boolean }) => (
 	<div className="drawer">
 		<input id="drawer" type="checkbox" className="drawer-toggle" />
 		<div className="drawer-content flex flex-col">{children}</div>
@@ -6,16 +8,26 @@ export const SideBar = ({ children }: { children: React.ReactNode }) => (
 			<label htmlFor="drawer" className="drawer-overlay"></label>
 			<ul className="menu p-4 w-80 bg-base-100 text-base-content">
 				<li>
-					<a href="/home">GAAS</a>
+					<Link to="/home">GAAS</Link>
 				</li>
 				<li />
-				<li>
-					<a href="/account">View Account</a>
-				</li>
-				<li />
-				<li>
-					<a href="/account.">Create Proejct</a>
-				</li>
+				{isLoggedIn ? (
+					<>
+						<li>
+							<Link to="/home/profile">View Account</Link>
+						</li>
+						<li />
+						<li>
+							{userType === "buisness" ? (
+								<Link to="/home/buisness/project/create">Create project</Link>
+							) : (
+								<Link to="/home/government/grant/create">Create grant</Link>
+							)}
+						</li>
+					</>
+				) : (
+					<></>
+				)}
 			</ul>
 		</div>
 	</div>
