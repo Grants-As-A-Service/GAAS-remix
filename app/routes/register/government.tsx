@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { UserContextADT } from "../register";
-import { Form, FormInput, FormDropDown, FormButton } from "../../components/forms/Form";
-import { useFormValidation, useFormValidationPost } from "../../components/hooks/formValidation";
-import forumData from "../../../FormData.json";
+import { Form, FormInput, FormButton } from "../../components/forms/Form";
+import { useFormValidationPost } from "../../components/hooks/formValidation";
 import { authorize } from "~/utils/firebaseClient";
 import { useOutletContext } from "@remix-run/react";
-import { Request, json, ActionArgs } from "@remix-run/node";
-import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/handler";
+import { ActionArgs } from "@remix-run/node";
+import { bodyParserHandler, mongoHandlerThrows } from "~/utils/handler";
 import { GovernmentBuilder } from "buisnessObjects/government";
 import { createGovernment } from "db/controllers/governmentController";
 import { AccountBuilder } from "buisnessObjects/account";
