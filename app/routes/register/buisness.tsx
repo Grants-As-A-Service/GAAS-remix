@@ -45,12 +45,12 @@ export default function Buisness() {
 		initState,
 		(state: BusinessADT) => {
 			if (state.phone.length !== 10) {
-				return "bad phone number";
+				return "Bad Phone Number";
 			}
 			for (const [key, value] of Object.entries(state)) {
 				//@ts-ignore
 				if (initState[key] === value) {
-					return "enter a value for " + key;
+					return "Enter a value for " + key;
 				}
 			}
 		},

@@ -63,12 +63,17 @@ declare global {
 		[key: string]: string | number | string[] | Date;
 	}
 
+	interface GrantADT extends Grant {
+		[key: string]: string | number | string[] | Date;
+	}
+
 	type Grant = {
 		title: string;
 		description: string;
 		creator: string;
 		tags: Array<string>;
 		createdAt: Date;
+		value: number;
 	};
 
 	type ID = {

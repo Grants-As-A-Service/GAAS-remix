@@ -7,6 +7,7 @@ export const GrantZod: z.ZodSchema<Grant> = z.object({
 	creator: z.string(),
 	tags: z.array(z.string()),
 	createdAt: z.date(),
+	value: z.number(),
 });
 
 export class GrantBuilder extends Builder<Grant> {
@@ -15,6 +16,7 @@ export class GrantBuilder extends Builder<Grant> {
 
 		let grant: Grant = {
 			...body,
+			value: parseInt(body.value),
 			createdAt: new Date(body.createdAt),
 		};
 
