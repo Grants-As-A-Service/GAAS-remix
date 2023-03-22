@@ -13,11 +13,11 @@ export default function Login() {
 		},
 		(state: UserLogin) => {
 			if (!validEmail(state.email)) {
-				return "bad email";
+				return "Invalid Email";
 			}
 
 			if (!validPassword(state.password)) {
-				return "bad password";
+				return "Invalid Password";
             }
 		},
 		async (state: UserLogin) => {
@@ -26,7 +26,7 @@ export default function Login() {
 				await authorize();
 				router.navigate("/home");
 			} catch (error) {
-				setError(JSON.stringify(error));
+				setError("Invalid username and/or password.");
 			}
 		}
 	);
