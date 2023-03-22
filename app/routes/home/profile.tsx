@@ -16,7 +16,7 @@ export default function ProfileView() {
 	const { account } = useLoaderData<typeof loader>();
 
 	return (
-		<Title title="View Grants" foot="All availible Grants.">
+		<Title title={account.name} foot="User Profile">
 			<h1 className="font-title mb-2 text-2xl pt-6">Profile</h1>
 			<div className="flex flex-row flex-wrap w-full gap-5 pt-4">
 				<Form>

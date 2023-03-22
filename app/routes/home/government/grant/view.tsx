@@ -33,11 +33,11 @@ export default function GrantView() {
 				</div>
 				<h1 className="font-title mb-2 text-2xl pb-2">{grant.description}</h1>
 				<h1 className="font-title mb-2 text-xl pb-1">Tags</h1>
-				<div className="flex flex-row flex-wrap gap-5">
+				<div className="flex flex-row flex-wrap gap-5 pb-10">
 					{grant.tags.map((tag) => {
 						return (
-							<div className="badge badge-secondary badge-lg flex flex-row gap-2">
-								<div>{tag} </div>
+							<div className="badge badge-accent badge-lg flex flex-row gap-2">
+								<p className='bold'>{tag} </p>
 								<button>
 									<span>&times;</span>
 								</button>
@@ -45,8 +45,8 @@ export default function GrantView() {
 						);
 					})}
 				</div>
-				<h1 className="font-title mb-2 text-3xl font-extrabold">Matched Projects</h1>
-				<div className="flex flex-row flex-wrap gap-5">
+				<h1 className="font-title mb-2 text-3xl font-extrabold pb-1">Matched Projects</h1>
+				<div className="flex flex-row flex-wrap gap-5 pb-10">
 					{matchedProjects.map(project => {
 						return project ? <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 						<a href="#">
