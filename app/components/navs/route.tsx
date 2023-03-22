@@ -1,6 +1,9 @@
+import { toBusiness } from "../magnusSpellingFix";
+
 export default function Route() {
 	const paths = typeof window !== "undefined" ? window.location.pathname.split("/") : "";
-	const path = typeof window !== "undefined" ? paths[paths.length - 1] : "";
+	const path = toBusiness(typeof window !== "undefined" ? paths[paths.length - 1] : "");
+
 
 	return (
 		<div className="flex-1">
