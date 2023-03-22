@@ -35,16 +35,16 @@ export default function User() {
 		},
 		(state: UserLogin) => {
 			if (state.password !== state.confirmPassword) {
-				return "passwords do not match";
+				return "Passwords do not match";
 			}
 			if (!validEmail(state.email)) {
-				return "bad email";
+				return "Bad Email";
 			}
 			if (!validPassword(state.password)) {
-				return "bad password";
+				return "Bad Password";
 			}
 			if (state.number.length !== 10) {
-				return "bad number";
+				return "Bad Number";
 			}
 		},
 		async (state: UserLogin) => {
