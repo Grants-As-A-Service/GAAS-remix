@@ -3,7 +3,7 @@ import type { Response, Request, NextFunction } from "express";
 declare global {
 	type HTTPSTATUS<T> = [T, number];
 
-	type UserType = "government" | "buisness";
+	type UserType = "government" | "business";
 
 	type Account = {
 		name: string;
