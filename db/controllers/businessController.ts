@@ -1,10 +1,10 @@
 import { BusinessModel } from "../models/business";
 
-const getBuisness = (email: string) => {
+export const getBusiness = (email: string) => {
 	return BusinessModel.findOne({ email: email });
 };
 
-const createBuisness = (business: Business, accountRef: string) => {
+export const createBusiness = (business: Business, accountRef: string) => {
 	return new Promise((resolve, reject) => {
 		try {
 			const businessDocument = new BusinessModel({
@@ -18,5 +18,3 @@ const createBuisness = (business: Business, accountRef: string) => {
 		}
 	});
 };
-
-export { getBuisness, createBuisness };

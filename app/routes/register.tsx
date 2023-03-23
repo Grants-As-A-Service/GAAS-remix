@@ -31,7 +31,7 @@ export default function Register() {
 		} else {
 			let props = { type, user };
 			if (user && type) {
-				let route = type === "buisness" ? "/register/buisness" : "/register/government";
+				let route = type === "business" ? "/register/business" : "/register/government";
 		
 				if (route !== router.current()) {
 					router.navigateWithProps(route, props);
