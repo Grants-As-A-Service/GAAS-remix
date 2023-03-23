@@ -36,7 +36,7 @@ export default function UserType() {
 		<div className="w-full flex flex-col text-center">
 			<h1 className="font-title mb-14 text-4xl font-extrabold sm:text-1xl lg:text-1xl">Pick a user type</h1>
 			<div className="w-full flex flex-row justify-center gap-10">
-				<button className="btn btn-primary" onClick={() => submitTypeFirebase("buisness")}>
+				<button className="btn btn-primary" onClick={() => submitTypeFirebase("business")}>
 					Business Owner
 				</button>
 				<button className="btn btn-primary" onClick={() => submitTypeFirebase("government")}>
