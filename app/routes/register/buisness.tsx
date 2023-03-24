@@ -9,7 +9,7 @@ import { Request, json, ActionArgs } from "@remix-run/node";
 import { createAccount, getAccountId } from "db/controllers/accountController";
 import { bodyParserHandler, mongoHandler, mongoHandlerThrows } from "~/utils/handler";
 import { BuisnessBuilder } from "buisnessObjects/buisness";
-import { createBusiness } from "db/controllers/businessController";
+import { createBusiness } from "db/controllers/buisnessController";
 import { AccountBuilder } from "buisnessObjects/account";
 
 export async function action({ request }: ActionArgs) {
