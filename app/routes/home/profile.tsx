@@ -1,13 +1,9 @@
 import { json, LoaderArgs } from "@remix-run/node";
-import { useState } from "react";
 import { useLoaderData } from "@remix-run/react";
-import { useRouter } from "~/components/hooks/navigator";
 import { Title } from "~/components/title";
 import { mongoHandlerThrows } from "~/utils/handler";
-import { Form, FormLabel } from "~/components/forms/Form";
-import { getGrants } from "db/controllers/grantController";
-import { Card } from "~/components/card";
-import { getAccount, getAccountId } from "db/controllers/accountController";
+import { Form } from "~/components/forms/Form";
+import { getAccount } from "db/controllers/accountController";
 
 export async function loader({ request, params }: LoaderArgs) {
 	let { email } = JSON.parse(request.headers.get("user") as string);

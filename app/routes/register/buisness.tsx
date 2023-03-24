@@ -73,9 +73,9 @@ export default function Buisness() {
 	return (
 		<>
 			<Form>
-				<h1 className="text-primary font-title text-2xl m-0 p-0">Buisness Info</h1>
-				<FormInput onTyping={(e) => update(e.target.value, "name")} type="text" label="Buisness Name" />
-				<FormInput onTyping={(e) => update(e.target.value, "phone")} type="tel" label="Buisness Phone" />
+				<h1 className="text-primary font-title text-2xl m-0 p-0">Business Info</h1>
+				<FormInput onTyping={(e) => update(e.target.value, "name")} type="text" label="Business Name" />
+				<FormInput onTyping={(e) => update(e.target.value, "phone")} type="tel" label="Business Phone" />
 
 				<div>
 					<FormInput onTyping={(e) => update(e.target.value, "address")} type="address" label="Address" />

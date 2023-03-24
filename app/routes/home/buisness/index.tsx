@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { ErrorComp } from "../../../components/error";
 import router from "~/utils/router";
 import { Card } from "~/components/card";
+import { toBusiness } from "~/components/magnusSpellingFix";
 
 export const loader = async ({ request }: LoaderArgs) => {
 	let { email, userType, accountId } = JSON.parse(request.headers.get("user") as string);
@@ -26,7 +27,7 @@ export default function Dashboard() {
 				<div className="pl-1">
 					<div className="mb-2 py-4 text-left">
 						<h1 className="font-title mb-2 text-4xl font-extrabold">Welcome {account.name}</h1>
-						<h1 className="font-title mb-2 text-2xl capitalize">{userType}</h1>
+						<h1 className="font-title mb-2 text-2xl capitalize">{toBusiness(userType)}</h1>
 					</div>
 
 					<h1 className="font-title mb-2 text-2xl py-2">Your Projects</h1>

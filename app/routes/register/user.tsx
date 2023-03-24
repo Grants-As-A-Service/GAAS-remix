@@ -1,11 +1,9 @@
 import { useOutletContext } from "@remix-run/react";
-import { useContext } from "react";
 import { signup } from "~/utils/firebaseClient";
-import router from "~/utils/router";
 import { UserContextADT } from "../register";
 import { Form, FormInput, FormButton } from "../../components/forms/Form";
-import { useFormValidation, useFormValidationPost, validEmail, validPassword } from "../../components/hooks/formValidation";
-import { bodyParserHandler, mongoHandler, mongoHandlerThrows, responseHandler } from "~/utils/handler";
+import { useFormValidation, validEmail, validPassword } from "../../components/hooks/formValidation";
+import { bodyParserHandler, mongoHandlerThrows, responseHandler } from "~/utils/handler";
 import { AccountBuilder } from "buisnessObjects/account";
 import { createAccount } from "db/controllers/accountController";
 
@@ -35,16 +33,16 @@ export default function User() {
 		},
 		(state: UserLogin) => {
 			if (state.password !== state.confirmPassword) {
-				return "passwords do not match";
+				return "Passwords do not match";
 			}
 			if (!validEmail(state.email)) {
-				return "bad email";
+				return "Bad Email";
 			}
 			if (!validPassword(state.password)) {
-				return "bad password";
+				return "Bad Password";
 			}
 			if (state.number.length !== 10) {
-				return "bad number";
+				return "Bad Number";
 			}
 		},
 		async (state: UserLogin) => {
