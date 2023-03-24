@@ -51,10 +51,10 @@ export default function App() {
 									title="Account"
 									menu={[
 										<li>
-											<a href={"/home/profile"}>account</a>
+											<a href={"/home/profile"}>Account</a>
 										</li>,
 										<li>
-											<a href="/logout">log out</a>
+											<a href="/logout">Logout</a>
 										</li>,
 									]}
 								/>
@@ -63,10 +63,10 @@ export default function App() {
 									title="Account"
 									menu={[
 										<li>
-											<a href="/login">sign in</a>
+											<a href="/login">Login</a>
 										</li>,
 										<li>
-											<a href="/register">register</a>
+											<a href="/register">Register</a>
 										</li>,
 									]}
 								/>
