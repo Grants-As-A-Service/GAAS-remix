@@ -41,26 +41,26 @@ export default function Business() {
         yearOfInception: new Date(),
     });
 
-    const [update, submit, error, setError] = useFormValidationPost<BusinessADT>(
-        initState,
-        (state: BusinessADT) => {
-            if (state.phone.length !== 10) {
-                return "bad phone number";
-            }
-            for (const [key, value] of Object.entries(state)) {
-                //@ts-ignore
-                if (initState[key] === value) {
-                    return "enter a value for " + key;
-                }
-            }
-        },
-        (state: Business) => {
-            return fetch("/register/buisness", {
-                method: "post",
-                body: JSON.stringify({ buisness: state, user }),
-            });
-        }
-    );
+	const [update, submit, error, setError] = useFormValidationPost<BusinessADT>(
+		initState,
+		(state: BusinessADT) => {
+			if (state.phone.length !== 10) {
+				return "Bad Phone Number";
+			}
+			for (const [key, value] of Object.entries(state)) {
+				//@ts-ignore
+				if (initState[key] === value) {
+					return "Enter a value for " + key;
+				}
+			}
+		},
+		(state: Business) => {
+			return fetch("/register/buisness", {
+				method: "post",
+				body: JSON.stringify({ buisness: state, user }),
+			});
+		}
+	);
 
     const upload = () => {
         submit().then(() => {

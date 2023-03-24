@@ -13,6 +13,10 @@ const GrantSchema = new mongoose.Schema({
 		type: Date,
 		default: new Date(),
 	},
+	value: {
+		type: mongoose.Schema.Types.Number,
+		default: 10000,
+	}
 });
 
 export const GrantModel = mongoose.models?.Grant || mongoose.model("Grant", GrantSchema);

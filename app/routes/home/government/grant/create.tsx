@@ -33,7 +33,7 @@ export async function action({ request }: ActionArgs) {
 	return new Response();
 }
 
-type GrantInfo = { title: string; description: string };
+type GrantInfo = { title: string; description: string; value: number };
 
 export default function CreateGrant() {
 	const { tags } = useLoaderData<typeof loader>();
@@ -42,10 +42,11 @@ export default function CreateGrant() {
 	const [initState] = useState<GrantInfo>({
 		title: "",
 		description: "",
+		value: 0
 	});
-	const [update, submit, error, setError] = useFormValidationPost<GrantInfo>(
-		initState,
-		(state: GrantInfo) => {
+	const [update, submit, error, setError] = useFormValidationPost<GrantADT>(
+		{...initState, tags: [], createdAt: new Date(), creator: ""},
+		(state: GrantADT) => {
 			for (const [key, value] of Object.entries(state)) {
 				//@ts-ignore
 				if (initState[key] === value) {
@@ -75,6 +76,7 @@ export default function CreateGrant() {
 					<Form customWidth="max-w-lg">
 						<FormInput onTyping={(e) => update(e.target.value, "title")} type="text" label="Title" />
 						<FormInput onTyping={(e) => update(e.target.value, "description")} type="text" label="Description" />
+						<FormInput onTyping={(e) => update(e.target.value, "value")} type="number" label="Value" />
 						<FormLabel>Tags</FormLabel>
 						<div className="flex flex-row w-full flex-wrap gap-4">
 							{Array.from(selectedTags).map((tag) => {
